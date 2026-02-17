@@ -12,63 +12,63 @@ public class CollisionChecker
 
     public void checkTile(Entity entity) {
 
-        if(!entity.immuneCollision){
-            // sets boundary corners for the player barrier
-            int entityLeftWorldX = entity.worldX + entity.solidArea.x;
-            int entityRightWorldX = entityLeftWorldX + entity.solidArea.x + entity.solidArea.width;
-            int entityTopWorldY = entity.worldY + entity.solidArea.y;
-            int entityBottomWorldY = entity.worldY + entity.solidArea.y +entity.solidArea.height;
 
-            // sets boundary lines for player barrier
-            int entityLeftCol = entityLeftWorldX/gp.tileSize;
-            int entityRightCol = entityRightWorldX/gp.tileSize;
-            int entityTopRow = entityTopWorldY/gp.tileSize;
-            int entityBottomRow = entityBottomWorldY/gp.tileSize;
+        // sets boundary corners for the player barrier
+        int entityLeftWorldX = entity.worldX + entity.solidArea.x;
+        int entityRightWorldX = entityLeftWorldX + entity.solidArea.x + entity.solidArea.width;
+        int entityTopWorldY = entity.worldY + entity.solidArea.y;
+        int entityBottomWorldY = entity.worldY + entity.solidArea.y +entity.solidArea.height;
 
-            int tileNum1, tileNum2;
+        // sets boundary lines for player barrier
+        int entityLeftCol = entityLeftWorldX/gp.tileSize;
+        int entityRightCol = entityRightWorldX/gp.tileSize;
+        int entityTopRow = entityTopWorldY/gp.tileSize;
+        int entityBottomRow = entityBottomWorldY/gp.tileSize;
 
-            /* Checks if a tile marked as 'true' for collision is interacting with the player.
-            * The area for which the player can collide with an object is not the size of a tile
-            * but rather small, so you don't need to line up directly with the path to walk down it */
-            switch (entity.direction) {
-                case "up" -> {
-                    entityTopRow = ((entityTopWorldY - entity.speed) / gp.tileSize);
-                    tileNum1 = gp.tileM.mapTileNum[gp.currentMap][entityLeftCol][entityTopRow];
-                    tileNum2 = gp.tileM.mapTileNum[gp.currentMap][entityRightCol][entityTopRow];
+        int tileNum1, tileNum2;
 
-                    if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
-                        entity.collisionOn = true;
-                    }
+        /* Checks if a tile marked as 'true' for collision is interacting with the player.
+        * The area for which the player can collide with an object is not the size of a tile
+        * but rather small, so you don't need to line up directly with the path to walk down it */
+        switch (entity.direction) {
+            case "up" -> {
+                entityTopRow = ((entityTopWorldY - entity.speed) / gp.tileSize);
+                tileNum1 = gp.tileM.mapTileNum[gp.currentMap][entityLeftCol][entityTopRow];
+                tileNum2 = gp.tileM.mapTileNum[gp.currentMap][entityRightCol][entityTopRow];
+
+                if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
+                    entity.collisionOn = true;
                 }
-                case "down" -> {
-                    entityBottomRow = ((entityBottomWorldY + entity.speed) / gp.tileSize);
-                    tileNum1 = gp.tileM.mapTileNum[gp.currentMap][entityLeftCol][entityBottomRow];
-                    tileNum2 = gp.tileM.mapTileNum[gp.currentMap][entityRightCol][entityBottomRow];
+            }
+            case "down" -> {
+                entityBottomRow = ((entityBottomWorldY + entity.speed) / gp.tileSize);
+                tileNum1 = gp.tileM.mapTileNum[gp.currentMap][entityLeftCol][entityBottomRow];
+                tileNum2 = gp.tileM.mapTileNum[gp.currentMap][entityRightCol][entityBottomRow];
 
-                    if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
-                        entity.collisionOn = true;
-                    }
+                if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
+                    entity.collisionOn = true;
                 }
-                case "left" -> {
-                    entityLeftCol = ((entityLeftWorldX - entity.speed) / gp.tileSize);
-                    tileNum1 = gp.tileM.mapTileNum[gp.currentMap][entityLeftCol][entityTopRow];
-                    tileNum2 = gp.tileM.mapTileNum[gp.currentMap][entityLeftCol][entityBottomRow];
+            }
+            case "left" -> {
+                entityLeftCol = ((entityLeftWorldX - entity.speed) / gp.tileSize);
+                tileNum1 = gp.tileM.mapTileNum[gp.currentMap][entityLeftCol][entityTopRow];
+                tileNum2 = gp.tileM.mapTileNum[gp.currentMap][entityLeftCol][entityBottomRow];
 
-                    if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
-                        entity.collisionOn = true;
-                    }
+                if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
+                    entity.collisionOn = true;
                 }
-                case "right" -> {
-                    entityRightCol = ((entityRightWorldX + entity.speed) / gp.tileSize);
-                    tileNum1 = gp.tileM.mapTileNum[gp.currentMap][entityRightCol][entityTopRow];
-                    tileNum2 = gp.tileM.mapTileNum[gp.currentMap][entityRightCol][entityBottomRow];
+            }
+            case "right" -> {
+                entityRightCol = ((entityRightWorldX + entity.speed) / gp.tileSize);
+                tileNum1 = gp.tileM.mapTileNum[gp.currentMap][entityRightCol][entityTopRow];
+                tileNum2 = gp.tileM.mapTileNum[gp.currentMap][entityRightCol][entityBottomRow];
 
-                    if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
-                        entity.collisionOn = true;
-                    }
+                if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
+                    entity.collisionOn = true;
                 }
             }
         }
+
     }
 
 

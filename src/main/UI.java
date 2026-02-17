@@ -1,9 +1,7 @@
 package main;
 
 import entity.Entity;
-import objects.OBJ_Coin_Bronze;
-import objects.OBJ_Heart;
-import objects.OBJ_ManaCrystal;
+import objects.*;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -33,6 +31,7 @@ public class UI {
     public int npcSlotCol = 0;
     public int npcSlotRow = 0;
     int subState = 0;
+    int slotCounter = 0;
     int counter = 0;
     public Entity npc;
 
@@ -121,6 +120,11 @@ public class UI {
         // TRADE STATE
         if(gp.gameState == gp.tradeState) {
             drawTradeScreen();
+        }
+
+        // SLEEP STATE
+        if(gp.gameState == gp.sleepState) {
+            drawSleepScreen();
         }
     }
     public void drawGameOverScreen() {
@@ -496,14 +500,34 @@ public class UI {
 
             // EQUIP CURSOR
             if(entity.inventory.get(i) == entity.currentWeapon ||
-                    entity.inventory.get(i) == entity.currentShield) {
+                    entity.inventory.get(i) == entity.currentShield ||
+                    entity.inventory.get(i) == entity.currentLight) {
                 g2.setColor(new Color(240,190,90));
                 g2.fillRoundRect(slotX,slotY,gp.tileSize,gp.tileSize,10,10);
-                counter++;
+                slotCounter++;
             }
 
-
             g2.drawImage(entity.inventory.get(i).down1, slotX, slotY,null);
+
+
+            // DISPLAY AMOUNT
+            if(entity.inventory.get(i).amount > 1) {
+
+                g2.setFont(g2.getFont().deriveFont(32f));
+                int amountX;
+                int amountY;
+
+                String s = "" + entity.inventory.get(i).amount;
+                amountX = getXforAlignToRightText(s, slotX + 44);
+                amountY = slotY + gp.tileSize;
+
+                // SHADOW
+                g2.setColor(new Color(60,60,60));
+                g2.drawString(s, amountX, amountY);
+                // NUMBER
+                g2.setColor(Color.white);
+                g2.drawString(s, amountX-3, amountY-3);
+            }
 
             slotX += slotSize;
 
@@ -915,14 +939,15 @@ public class UI {
                     currentDialogue = " You trying to scam me or something?";
                     drawDialogueScreen();
                 }
-                else if(gp.player.inventory.size() == gp.player.maxInventorySize) {
-                    subState = 0;
-                    gp.gameState = gp.dialogueState;
-                    currentDialogue = " Your inventory is full";
-                }
                 else {
-                    gp.player.coin -= npc.inventory.get(itemIndex).price;
-                    gp.player.inventory.add(npc.inventory.get(itemIndex));
+                    if(gp.player.canObtainItem(npc.inventory.get(itemIndex))) {
+                        gp.player.coin -= npc.inventory.get(itemIndex).price;
+                    }
+                    else {
+                        subState = 0;
+                        gp.gameState = gp.dialogueState;
+                        currentDialogue = " Your inventory is full";
+                    }
                 }
             }
         }
@@ -982,12 +1007,38 @@ public class UI {
                     currentDialogue = "You cannot sell equipped items!";
                 }
                 else {
-                    gp.player.inventory.remove(itemIndex);
+                    if(gp.player.inventory.get(itemIndex).amount > 1) {
+                        gp.player.inventory.get(itemIndex).amount--;
+                    }
+                    else {
+                        gp.player.inventory.remove(itemIndex);
+                    }
                     gp.player.coin += price;
                 }
             }
         }
 
+    }
+    public void drawSleepScreen() {
+
+        counter++;
+
+        if(counter < 120) {
+            gp.eManager.lighting.filterAlpha += 0.01f;
+            if(gp.eManager.lighting.filterAlpha > 1f) {
+                gp.eManager.lighting.filterAlpha = 1f;
+            }
+        }
+        if(counter >= 120) {
+            gp.eManager.lighting.filterAlpha -= 0.01f;
+            if(gp.eManager.lighting.filterAlpha <= 0) {
+                gp.eManager.lighting.filterAlpha = 0f;
+                counter = 0;
+                gp.eManager.lighting.dayState = gp.eManager.lighting.day;
+                gp.gameState = gp.playState;
+                gp.player.getPlayerImage();
+            }
+        }
     }
     public int getItemIndexOnSlot(int slotCol, int slotRow) {
         int itemIndex = slotCol + (slotRow * 5); // there are 5 slots per row

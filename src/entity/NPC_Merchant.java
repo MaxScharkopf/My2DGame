@@ -45,4 +45,5 @@ public class NPC_Merchant extends Entity{
         gp.gameState = gp.tradeState;
         gp.ui.npc = this;
     }
+
 }

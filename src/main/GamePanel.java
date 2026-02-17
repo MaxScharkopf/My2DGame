@@ -3,6 +3,8 @@ package main;
 import ai.PathFinder;
 import entity.Entity;
 import entity.Player;
+import environment.EnvironmentManager;
+import tile.Map;
 import tile.TileManager;
 import tiles_interactive.InteractiveTile;
 
@@ -50,6 +52,8 @@ public class GamePanel extends JPanel implements Runnable{
     public UI ui = new UI(this);
     Config config = new Config(this);
     public PathFinder pFinder = new PathFinder(this);
+    EnvironmentManager eManager = new EnvironmentManager(this);
+    Map map = new Map(this);
     Thread gameThread;
 
     // ENTITY AND OBJECT
@@ -59,9 +63,10 @@ public class GamePanel extends JPanel implements Runnable{
     public Entity[][] monster = new Entity[maxMap][20]; // array of sprites
     public Entity[][] critter = new Entity[maxMap][20];
     public InteractiveTile[][] iTile = new InteractiveTile[maxMap][50];
+    public Entity[][] projectile = new Entity[maxMap][20];
     public ArrayList<Entity> particleList = new ArrayList<>();
     ArrayList<Entity> entityList = new ArrayList<>();
-    public ArrayList<Entity> projectileList = new ArrayList<>();
+
 
     // GAME STATE
     public int gameState;
@@ -73,7 +78,9 @@ public class GamePanel extends JPanel implements Runnable{
     public final int optionsState = 5;
     public final int gameOverState = 6;
     public final int transitionState = 7;
-    public final int tradeState = 9;
+    public final int tradeState = 8;
+    public final int sleepState = 9;
+    public final int mapState = 10;
 
     // Constructor
     public GamePanel (){
@@ -92,6 +99,7 @@ public class GamePanel extends JPanel implements Runnable{
         aSetter.setMonster();
         aSetter.setCritter();
         aSetter.setInteractiveTile();
+        eManager.setup();
 
 
         gameState = titleState;
@@ -212,13 +220,13 @@ public class GamePanel extends JPanel implements Runnable{
                 }
             }
             // PROJECTILE
-            for(int i = 0; i < projectileList.size(); i++) {
-                if(projectileList.get(i) != null) {
-                    if(projectileList.get(i).alive) {
-                        projectileList.get(i).update();
+            for(int i = 0; i < projectile[1].length; i++) {
+                if(projectile[currentMap][i] != null) {
+                    if(projectile[currentMap][i].alive) {
+                        projectile[currentMap][i].update();
                     }
-                    if(!projectileList.get(i).alive) {
-                        projectileList.remove(i);
+                    if(!projectile[currentMap][i].alive) {
+                        projectile[currentMap][i] = null;
                     }
                 }
             }
@@ -239,6 +247,7 @@ public class GamePanel extends JPanel implements Runnable{
                         iTile[currentMap][i].update();
                 }
             }
+            eManager.update();
         }
         if(gameState == pauseState) {
 
@@ -257,6 +266,12 @@ public class GamePanel extends JPanel implements Runnable{
         // TITLE SCREEN 1
         if(gameState == titleState) {
             ui.draw(g2);
+        }
+
+        // MAP SCREEN
+
+        else if(gameState == mapState) {
+            map.drawFullMapScreen(g2);
         }
         // OTHERS
         else {
@@ -293,9 +308,9 @@ public class GamePanel extends JPanel implements Runnable{
                     entityList.add(critter[currentMap][i]);
                 }
             }
-            for (Entity value : projectileList) {
-                if (value != null) {
-                    entityList.add(value);
+            for (int i = 0; i < projectile[1].length; i++) {
+                if (projectile[currentMap][i] != null) {
+                    entityList.add(projectile[currentMap][i]);
                 }
             }
             for (Entity value : particleList) {
@@ -319,6 +334,9 @@ public class GamePanel extends JPanel implements Runnable{
 
             // EMPTY ENTITY LIST
             entityList.clear();
+
+            // ENVIRONMENT
+            eManager.draw(g2);
 
             // UI
             ui.draw(g2);

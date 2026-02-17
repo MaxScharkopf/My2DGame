@@ -2,6 +2,7 @@ package entity;
 
 import main.GamePanel;
 import main.UtilityTool;
+import objects.*;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -36,6 +37,7 @@ public class Entity {
     boolean hpBarOn = false;
     public boolean immuneCollision = false;
     public boolean onPath = false;
+    public boolean knockBack = false;
 
     // COUNTER
     public int spriteCounter = 0;
@@ -45,9 +47,11 @@ public class Entity {
     public int shotAvailableCounter;
     int dyingCounter = 0;
     int hpBarCounter = 0;
+    int knockBackCounter = 0;
 
     // CHARACTER ATTRIBUTES
     public String name;
+    public int defaultSpeed;
     public int speed;
     public int maxLife;
     public int maxMana;
@@ -64,6 +68,7 @@ public class Entity {
     public int coin;
     public Entity currentWeapon;
     public Entity currentShield;
+    public Entity currentLight;
     public Projectile projectile;
 
     // ITEM ATTRIBUTES
@@ -75,6 +80,10 @@ public class Entity {
     public ArrayList<Entity> inventory = new ArrayList<>();
     public final int maxInventorySize = 20;
     public int price;
+    public int knockBackPower = 0;
+    public boolean stackable = false;
+    public int amount = 1;
+    public int lightRadius;
 
     // TYPE
     public int type; // 0 = player, 1 = npc, 2 = monster; 3 = critters
@@ -87,15 +96,35 @@ public class Entity {
     public final int type_shield = 6;
     public final int type_consumable = 7;
     public final int type_pickUpOnly = 8;
+    public final int type_obstacle = 9;
+    public final int type_light = 10;
 
 
     public Entity(GamePanel gp){
         this.gp = gp;
     }
 
+    public int getLeftX() {
+        return worldX + solidArea.x;
+    }
+    public int getRightX() {
+        return worldX + solidArea.x + solidArea.width;
+    }
+    public int getTopY() {
+        return worldY+ solidArea.y;
+    }
+    public int getBottomY() {
+        return worldY+ solidArea.y + solidArea.height;
+    }
+    public int getCol() {
+        return(worldX + solidArea.x)/gp.tileSize;
+    }
+    public int getRow() {
+        return(worldY + solidArea.y)/gp.tileSize;
+    }
     public void setAction() {}
     public void damageReaction() {}
-    public void use(Entity entity) {}
+    public boolean use(Entity entity) {return false;}
     public void checkDrop() {}
     public void dropItem(Entity droppedItem) {
         for(int i = 0; i < gp.obj[1].length; i++) {
@@ -156,21 +185,49 @@ public class Entity {
     }
     public void update() {
 
-        setAction();
-        checkCollision();
+        if(knockBack) {
 
-        // IF COLLISION IS FALSE, PLAYER CAN MOVE
-        if(!collisionOn){
+            checkCollision();
 
-            switch (direction) {
-                case "up" -> worldY -= speed;
-                case "down" -> worldY += speed;
-                case "left" -> worldX -= speed;
-                case "right" -> worldX += speed;
+            if(collisionOn) {
+                knockBackCounter = 0;
+                knockBack = false;
+                speed = defaultSpeed;
+            }
+            else if(!collisionOn) {
+                switch (gp.player.direction) {
+                    case "up" -> worldY -= speed;
+                    case "down" -> worldY += speed;
+                    case "left" -> worldX -= speed;
+                    case "right" -> worldX += speed;
+                }
+            }
+
+            knockBackCounter++;
+            // increase knockBackCounter to increase knockback distance
+            if(knockBackCounter == 10) {
+                knockBackCounter = 0;
+                knockBack = false;
+                speed = defaultSpeed;
             }
         }
-        spriteCounter++;
+        else {
+            setAction();
+            checkCollision();
 
+            // IF COLLISION IS FALSE, PLAYER CAN MOVE
+            if (!collisionOn) {
+
+                switch (direction) {
+                    case "up" -> worldY -= speed;
+                    case "down" -> worldY += speed;
+                    case "left" -> worldX -= speed;
+                    case "right" -> worldX += speed;
+                }
+            }
+        }
+
+        spriteCounter++;
         if(spriteCounter > 24){
             if(spriteNum == 1) {
                 spriteNum = 2;
@@ -308,6 +365,9 @@ public class Entity {
         }
 
     }
+    public void interact() {
+
+    }
     public BufferedImage setup(String imagePath, int width, int height) {
         UtilityTool uTool = new UtilityTool();
         BufferedImage image = null;
@@ -381,5 +441,48 @@ public class Entity {
 //
 //            }
         }
+    }
+    public Entity createNewItem(Entity itemTemplate) {
+
+        if (itemTemplate instanceof OBJ_Tent) return new OBJ_Tent(gp);
+        if (itemTemplate instanceof OBJ_Potion_Red) return new OBJ_Potion_Red(gp);
+        if (itemTemplate instanceof OBJ_Key) return new OBJ_Key(gp);
+        if (itemTemplate instanceof OBJ_Shield_Blue) return new OBJ_Shield_Blue(gp);
+        if (itemTemplate instanceof OBJ_Sword_Normal) return new OBJ_Sword_Normal(gp);
+        if (itemTemplate instanceof OBJ_Axe) return new OBJ_Axe(gp);
+        if (itemTemplate instanceof OBJ_Lantern) return new OBJ_Lantern(gp);
+        return null; // Handle invalid item types
+    }
+    public int getDetected(Entity user, Entity[][] target, String targetName) {
+
+        int index = 999;
+
+        // Check the surrounding objects
+        int nextWorldX = user.getLeftX();
+        int nextWorldY = user.getTopY();
+
+        /* If an object is adjacent to the user it can be detected*/
+        switch(user.direction) {
+            case "up": nextWorldY = user.getTopY() - 1; break;
+            case "down": nextWorldY = user.getBottomY() + 1; break;
+            case "left": nextWorldX = user.getLeftX() - 1; break;
+            case "right": nextWorldX = user.getRightX() + 1; break;
+        }
+        int col = nextWorldX/gp.tileSize;
+        int row = nextWorldY/gp.tileSize;
+
+        /* Checks to see if the object we are looking for is being detected*/
+        for(int i = 0; i <target[1].length; i++) {
+            if(target[gp.currentMap][i] != null) {
+                if(target[gp.currentMap][i].getCol() == col &&
+                        target[gp.currentMap][i].getRow() == row &&
+                        target[gp.currentMap][i].name.equals(targetName)) {
+
+                    index = i;
+                    break;
+                }
+            }
+        }
+        return index;
     }
 }

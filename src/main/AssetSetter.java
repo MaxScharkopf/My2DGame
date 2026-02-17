@@ -1,12 +1,10 @@
 package main;
 
-import critters.CRIT_Butterfly;
 import entity.NPC_Merchant;
 import entity.NPC_OldMan;
 import monster.MON_GreenSlime;
 import objects.*;
 import tiles_interactive.IT_DryTree;
-import tiles_interactive.InteractiveTile;
 
 public class AssetSetter {
 
@@ -25,9 +23,29 @@ public class AssetSetter {
         gp.obj[mapNum][i].worldX = gp.tileSize * 22;
         gp.obj[mapNum][i].worldY = gp.tileSize * 16;
         i++;
-        gp.obj[mapNum][i] = new OBJ_Shield_Blue(gp);
+        gp.obj[mapNum][i] = new OBJ_Door(gp);
+        gp.obj[mapNum][i].worldX = gp.tileSize * 14;
+        gp.obj[mapNum][i].worldY = gp.tileSize * 28;
+        i++;
+        gp.obj[mapNum][i] = new OBJ_Door(gp);
+        gp.obj[mapNum][i].worldX = gp.tileSize * 12;
+        gp.obj[mapNum][i].worldY = gp.tileSize * 12;
+        i++;
+        gp.obj[mapNum][i] = new OBJ_Chest(gp, new OBJ_Key(gp));
+        gp.obj[mapNum][i].worldX = gp.tileSize * 30;
+        gp.obj[mapNum][i].worldY = gp.tileSize * 28;
+        i++;
+        gp.obj[mapNum][i] = new OBJ_Key(gp);
         gp.obj[mapNum][i].worldX = gp.tileSize * 22;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 15;
+        gp.obj[mapNum][i].worldY = gp.tileSize * 18;
+        i++;
+        gp.obj[mapNum][i] = new OBJ_Tent(gp);
+        gp.obj[mapNum][i].worldX = gp.tileSize * 19;
+        gp.obj[mapNum][i].worldY = gp.tileSize * 20;
+        i++;
+        gp.obj[mapNum][i] = new OBJ_Lantern(gp);
+        gp.obj[mapNum][i].worldX = gp.tileSize * 22;
+        gp.obj[mapNum][i].worldY = gp.tileSize * 19;
         i++;
     }
     public void setNPC() {
@@ -76,7 +94,16 @@ public class AssetSetter {
 
         int mapNum = 0;
         int i = 0;
-
+        gp.iTile[mapNum][i] = new IT_DryTree(gp, 25, 26);i++;
+        gp.iTile[mapNum][i] = new IT_DryTree(gp, 26, 26);i++;
+        gp.iTile[mapNum][i] = new IT_DryTree(gp, 27, 26);i++;
+        gp.iTile[mapNum][i] = new IT_DryTree(gp, 27, 27);i++;
+        gp.iTile[mapNum][i] = new IT_DryTree(gp, 27, 28);i++;
+        gp.iTile[mapNum][i] = new IT_DryTree(gp, 27, 29);i++;
+        gp.iTile[mapNum][i] = new IT_DryTree(gp, 27, 30);i++;
+        gp.iTile[mapNum][i] = new IT_DryTree(gp, 28, 30);i++;
+        gp.iTile[mapNum][i] = new IT_DryTree(gp, 29, 30);i++;
+        gp.iTile[mapNum][i] = new IT_DryTree(gp, 30, 30);i++;
         gp.iTile[mapNum][i] = new IT_DryTree(gp, 27, 12);i++;
         gp.iTile[mapNum][i] = new IT_DryTree(gp, 28, 12);i++;
         gp.iTile[mapNum][i] = new IT_DryTree(gp, 29, 12);i++;
@@ -91,7 +118,5 @@ public class AssetSetter {
         gp.iTile[mapNum][i] = new IT_DryTree(gp, 15, 40);i++;
         gp.iTile[mapNum][i] = new IT_DryTree(gp, 14, 40);i++;
         gp.iTile[mapNum][i] = new IT_DryTree(gp, 13, 40);
-
-
     }
 }

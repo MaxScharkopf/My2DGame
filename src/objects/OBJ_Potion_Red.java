@@ -17,11 +17,13 @@ public class OBJ_Potion_Red extends Entity {
         type = type_consumable;
         name = "Red Potion";
         value = 5;
+        price = 10;
+        stackable = true;
+
         down1 = setup("/objects/potion_red", gp.tileSize, gp.tileSize);
         description = "[Red Potion] \n Heals your life by "+value+".";
-        price = 10;
     }
-    public void use(Entity entity) {
+    public boolean use(Entity entity) {
         gp.gameState = gp.dialogueState;
 
         if(gp.player.life != gp.player.maxLife){
@@ -32,8 +34,10 @@ public class OBJ_Potion_Red extends Entity {
 
             gp.player.inventory.remove(gp.ui.getItemIndexOnSlot(gp.ui.playerSlotCol, gp.ui.playerSlotRow));
             gp.playSE(10);
+            return true;
         } else {
             gp.ui.currentDialogue = "Your health bar is full. \n This will have no effect";
+            return false;
         }
     }
 }
