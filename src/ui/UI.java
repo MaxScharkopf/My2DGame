@@ -444,7 +444,6 @@ public class UI {
                     entity.inventory.get(i) == entity.currentShield) {
                 g2.setColor(new Color(240,190,90));
                 g2.fillRoundRect(slotX,slotY,gp.tileSize,gp.tileSize,10,10);
-                counter++;
             }
 
             g2.drawImage(entity.inventory.get(i).down1, slotX, slotY,null);
@@ -726,7 +725,7 @@ public class UI {
         g2.setColor(new Color(0,0,0, 5));
         g2.fillRect(0,0,gp.screenWidth,gp.screenHeight);
 
-        if(counter == 50) {
+        if(counter >= 50) {
             counter = 0;
             gp.gameState = GameState.PLAY;
             gp.currentMap = gp.eHandler.tempMap;
