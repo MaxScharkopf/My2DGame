@@ -173,14 +173,14 @@ public class KeyHandler implements KeyListener {
     public void dialogueState(int code) {
         if (code == KeyEvent.VK_ENTER) {
 
-            int npcIndex = gp.cChecker.checkEntity(gp.player, gp.npc);
+            int npcIndex = gp.cChecker.checkEntity(gp.player, gp.em.npc);
             if (npcIndex != 999) {
-                int dialogIndex = gp.npc[gp.currentMap][npcIndex].dialogueIndex;
-                if (gp.npc[gp.currentMap][npcIndex].dialogues[dialogIndex] == null) {
+                int dialogIndex = gp.em.npc[gp.currentMap][npcIndex].dialogueIndex;
+                if (gp.em.npc[gp.currentMap][npcIndex].dialogues[dialogIndex] == null) {
                     gp.gameState = GameState.PLAY;
-                    gp.npc[gp.currentMap][npcIndex].dialogueIndex = 0;
-                } else if (gp.npc[npcIndex] != null) {
-                    gp.npc[gp.currentMap][npcIndex].speak();
+                    gp.em.npc[gp.currentMap][npcIndex].dialogueIndex = 0;
+                } else if (gp.em.npc[npcIndex] != null) {
+                    gp.em.npc[gp.currentMap][npcIndex].speak();
                 }
             } else {
                 gp.gameState = GameState.PLAY;

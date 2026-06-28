@@ -68,14 +68,14 @@ public class CollisionChecker {
 
         int index = 999;
 
-        for (int i = 0; i < gp.obj[1].length; i++) {
-            if (gp.obj[gp.currentMap][i] != null) {
+        for (int i = 0; i < gp.om.obj[1].length; i++) {
+            if (gp.om.obj[gp.currentMap][i] != null) {
 
                 entity.solidArea.x = entity.worldX + entity.solidArea.x;
                 entity.solidArea.y = entity.worldY + entity.solidArea.y;
 
-                gp.obj[gp.currentMap][i].solidArea.x = gp.obj[gp.currentMap][i].worldX + gp.obj[gp.currentMap][i].solidArea.x;
-                gp.obj[gp.currentMap][i].solidArea.y = gp.obj[gp.currentMap][i].worldY + gp.obj[gp.currentMap][i].solidArea.y;
+                gp.om.obj[gp.currentMap][i].solidArea.x = gp.om.obj[gp.currentMap][i].worldX + gp.om.obj[gp.currentMap][i].solidArea.x;
+                gp.om.obj[gp.currentMap][i].solidArea.y = gp.om.obj[gp.currentMap][i].worldY + gp.om.obj[gp.currentMap][i].solidArea.y;
 
                 switch (entity.direction) {
                     case "up"    -> entity.solidArea.y -= entity.speed;
@@ -84,8 +84,8 @@ public class CollisionChecker {
                     case "right" -> entity.solidArea.x += entity.speed;
                 }
 
-                if (entity.solidArea.intersects(gp.obj[gp.currentMap][i].solidArea)) {
-                    if (gp.obj[gp.currentMap][i].collision) {
+                if (entity.solidArea.intersects(gp.om.obj[gp.currentMap][i].solidArea)) {
+                    if (gp.om.obj[gp.currentMap][i].collision) {
                         entity.collisionOn = true;
                     }
                     if (player) {
@@ -95,8 +95,8 @@ public class CollisionChecker {
 
                 entity.solidArea.x = entity.solidAreaDefaultX;
                 entity.solidArea.y = entity.solidAreaDefaultY;
-                gp.obj[gp.currentMap][i].solidArea.x = gp.obj[gp.currentMap][i].solidAreaDefaultX;
-                gp.obj[gp.currentMap][i].solidArea.y = gp.obj[gp.currentMap][i].solidAreaDefaultY;
+                gp.om.obj[gp.currentMap][i].solidArea.x = gp.om.obj[gp.currentMap][i].solidAreaDefaultX;
+                gp.om.obj[gp.currentMap][i].solidArea.y = gp.om.obj[gp.currentMap][i].solidAreaDefaultY;
             }
         }
 

@@ -4,15 +4,15 @@ import ai.PathFinder;
 import audio.Sound;
 import config.Config;
 import entity.Entity;
-import entity.LivingEntity;
 import entity.Player;
 import input.KeyHandler;
 import physics.CollisionChecker;
-import tiles_interactive.InteractiveTile;
 import ui.UI;
 import util.UtilityTool;
 import world.AssetSetter;
+import world.EntityManager;
 import world.EventHandler;
+import world.ObjectManager;
 import world.TileManager;
 
 import javax.swing.JPanel;
@@ -63,14 +63,9 @@ public class GamePanel extends JPanel implements Runnable{
 
     // ENTITY AND OBJECT
     public Player player = new Player(this,keyH);
-    public Entity[][] obj = new Entity[maxMap][20];
-    public LivingEntity[][] npc = new LivingEntity[maxMap][10];
-    public LivingEntity[][] monster = new LivingEntity[maxMap][20];
-    public LivingEntity[][] critter = new LivingEntity[maxMap][20];
-    public InteractiveTile[][] iTile = new InteractiveTile[maxMap][50];
-    public ArrayList<Entity> particleList = new ArrayList<>();
+    public EntityManager em = new EntityManager(this);
+    public ObjectManager om = new ObjectManager(this);
     ArrayList<Entity> entityList = new ArrayList<>();
-    public ArrayList<Entity> projectileList = new ArrayList<>();
 
     // GAME STATE
     public GameState gameState;
@@ -178,67 +173,9 @@ public class GamePanel extends JPanel implements Runnable{
         }
     }
     public void update(){
-
         if(gameState == GameState.PLAY) {
             player.update();
-
-            // NPC
-            for (int i = 0; i < npc[1].length; i++) {
-                if (npc[currentMap][i] != null) {
-                    npc[currentMap][i].update();
-                }
-            }
-            // MONSTER
-            for(int i = 0; i < monster[1].length; i++) {
-                if(monster[currentMap][i] != null) {
-                    if(monster[currentMap][i].alive && !monster[currentMap][i].dying) {
-                        monster[currentMap][i].update();
-                    }
-                    if(!monster[currentMap][i].alive) {
-                        monster[currentMap][i].checkDrop();
-                        monster[currentMap][i] = null;
-                    }
-                }
-            }
-            // CRITTER
-            for(int i = 0; i < critter[1].length; i++) {
-                if(critter[currentMap][i] != null) {
-                    if(critter[currentMap][i].alive) {
-                        critter[currentMap][i].update();
-                    }
-                    if(!critter[currentMap][i].alive) {
-                        critter[currentMap][i] = null;
-                    }
-                }
-            }
-            // PROJECTILE
-            for(int i = 0; i < projectileList.size(); i++) {
-                if(projectileList.get(i) != null) {
-                    if(projectileList.get(i).alive) {
-                        projectileList.get(i).update();
-                    }
-                    if(!projectileList.get(i).alive) {
-                        projectileList.remove(i);
-                    }
-                }
-            }
-            // PARTICLE
-            for(int i = 0; i < particleList.size(); i++) {
-                if(particleList.get(i) != null) {
-                    if(particleList.get(i).alive) {
-                        particleList.get(i).update();
-                    }
-                    if(!particleList.get(i).alive) {
-                        particleList.remove(i);
-                    }
-                }
-            }
-            // INTERACTIVE TILE
-            for(int i = 0; i < iTile[1].length; i++) {
-                if(iTile[currentMap][i] != null) {
-                        iTile[currentMap][i].update();
-                }
-            }
+            em.update();
         }
         if(gameState == GameState.PAUSE) {
 
@@ -264,41 +201,41 @@ public class GamePanel extends JPanel implements Runnable{
             tileM.draw(g2); // drawing tiles before player, or we would not see our character
 
             // INTERACTIVE TILE
-            for (int i = 0; i < iTile[1].length; i++) {
-                if (iTile[currentMap][i] != null) {
-                    iTile[currentMap][i].draw(g2);
+            for (int i = 0; i < em.iTile[1].length; i++) {
+                if (em.iTile[currentMap][i] != null) {
+                    em.iTile[currentMap][i].draw(g2);
                 }
             }
 
             // ADD ENTITIES TO THE LIST
             entityList.add(player);
 
-            for (int i = 0; i < npc[1].length; i++) {
-                if (npc[currentMap][i] != null) {
-                    entityList.add(npc[currentMap][i]);
+            for (int i = 0; i < em.npc[1].length; i++) {
+                if (em.npc[currentMap][i] != null) {
+                    entityList.add(em.npc[currentMap][i]);
                 }
             }
-            for (int i = 0; i < obj[1].length; i++) {
-                if (obj[currentMap][i] != null) {
-                    entityList.add(obj[currentMap][i]);
+            for (int i = 0; i < om.obj[1].length; i++) {
+                if (om.obj[currentMap][i] != null) {
+                    entityList.add(om.obj[currentMap][i]);
                 }
             }
-            for (int i = 0; i < monster[1].length; i++) {
-                if (monster[currentMap][i] != null) {
-                    entityList.add(monster[currentMap][i]);
+            for (int i = 0; i < em.monster[1].length; i++) {
+                if (em.monster[currentMap][i] != null) {
+                    entityList.add(em.monster[currentMap][i]);
                 }
             }
-            for (int i = 0; i < critter[1].length; i++) {
-                if (critter[currentMap][i] != null) {
-                    entityList.add(critter[currentMap][i]);
+            for (int i = 0; i < em.critter[1].length; i++) {
+                if (em.critter[currentMap][i] != null) {
+                    entityList.add(em.critter[currentMap][i]);
                 }
             }
-            for (Entity value : projectileList) {
+            for (Entity value : em.projectileList) {
                 if (value != null) {
                     entityList.add(value);
                 }
             }
-            for (Entity value : particleList) {
+            for (Entity value : em.particleList) {
                 if (value != null) {
                     entityList.add(value);
                 }

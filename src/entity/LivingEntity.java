@@ -77,11 +77,11 @@ public abstract class LivingEntity extends Entity implements ILiving, ICombatant
     public void checkDrop() {}
 
     public void dropItem(Entity droppedItem) {
-        for (int i = 0; i < gp.obj[1].length; i++) {
-            if (gp.obj[gp.currentMap][i] == null) {
-                gp.obj[gp.currentMap][i] = droppedItem;
-                gp.obj[gp.currentMap][i].worldX = worldX;
-                gp.obj[gp.currentMap][i].worldY = worldY;
+        for (int i = 0; i < gp.om.obj[1].length; i++) {
+            if (gp.om.obj[gp.currentMap][i] == null) {
+                gp.om.obj[gp.currentMap][i] = droppedItem;
+                gp.om.obj[gp.currentMap][i].worldX = worldX;
+                gp.om.obj[gp.currentMap][i].worldY = worldY;
                 break;
             }
         }
@@ -103,19 +103,19 @@ public abstract class LivingEntity extends Entity implements ILiving, ICombatant
         Particle p3 = new Particle(gp, target, color, size, speed, maxLife, -2,  1);
         Particle p4 = new Particle(gp, target, color, size, speed, maxLife,  2,  1);
 
-        gp.particleList.add(p1);
-        gp.particleList.add(p2);
-        gp.particleList.add(p3);
-        gp.particleList.add(p4);
+        gp.em.particleList.add(p1);
+        gp.em.particleList.add(p2);
+        gp.em.particleList.add(p3);
+        gp.em.particleList.add(p4);
     }
 
     public void checkCollision() {
         collisionOn = false;
         gp.cChecker.checkTile(this);
         gp.cChecker.checkObject(this, false);
-        gp.cChecker.checkEntity(this, gp.npc);
-        gp.cChecker.checkEntity(this, gp.monster);
-        gp.cChecker.checkEntity(this, gp.iTile);
+        gp.cChecker.checkEntity(this, gp.em.npc);
+        gp.cChecker.checkEntity(this, gp.em.monster);
+        gp.cChecker.checkEntity(this, gp.em.iTile);
         boolean contactPlayer = gp.cChecker.checkPlayer(this);
 
         if (this.type == EntityType.MONSTER && contactPlayer) {

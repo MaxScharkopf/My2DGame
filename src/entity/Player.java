@@ -163,19 +163,19 @@ public class Player extends LivingEntity {
             pickUpObject(objIndex);
 
             // CHECK NPC COLLISION
-            int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
+            int npcIndex = gp.cChecker.checkEntity(this, gp.em.npc);
             interactNPC(npcIndex);
 
             // CHECK MONSTER COLLISION
-            int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
+            int monsterIndex = gp.cChecker.checkEntity(this, gp.em.monster);
             interactMonster(monsterIndex);
 
             // CHECK CRITTER COLLISION
-            int critterIndex = gp.cChecker.checkEntity(this, gp.critter);
+            int critterIndex = gp.cChecker.checkEntity(this, gp.em.critter);
             interactCritter(critterIndex);
 
             // CHECK INTERACTIVE TILE COLLISION
-            int iTileIndex = gp.cChecker.checkEntity(this, gp.iTile);
+            int iTileIndex = gp.cChecker.checkEntity(this, gp.em.iTile);
 
             // CHECK EVENT
             gp.eHandler.checkEvent();
@@ -228,7 +228,7 @@ public class Player extends LivingEntity {
             projectile.subtractResource(this);
 
             // ADD TO ARRAY LIST
-            gp.projectileList.add(projectile);
+            gp.em.projectileList.add(projectile);
 
             shotAvailableCounter = 0;
 
@@ -286,13 +286,13 @@ public class Player extends LivingEntity {
             solidArea.height = attackArea.height;
 
             // Check monster collision with the update worldX, worldY and solidArea
-            int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
+            int monsterIndex = gp.cChecker.checkEntity(this, gp.em.monster);
             damageMonster(monsterIndex, attack);
 
-            int critterIndex = gp.cChecker.checkEntity(this, gp.critter);
+            int critterIndex = gp.cChecker.checkEntity(this, gp.em.critter);
             damageCritter(critterIndex);
 
-            int iTileIndex = gp.cChecker.checkEntity(this,gp.iTile);
+            int iTileIndex = gp.cChecker.checkEntity(this,gp.em.iTile);
             damageInteractiveTile(iTileIndex);
 
             worldX = currentWorldX;
@@ -312,10 +312,10 @@ public class Player extends LivingEntity {
         if(i != 999) { // will always be 999 unless player comes in contact with an object
 
             // PICKUP ONLY ITEMS
-            if(gp.obj[gp.currentMap][i].type == EntityType.PICK_UP_ONLY) {
+            if(gp.om.obj[gp.currentMap][i].type == EntityType.PICK_UP_ONLY) {
 
-                gp.obj[gp.currentMap][i].use(this);
-                gp.obj[gp.currentMap][i] = null;
+                gp.om.obj[gp.currentMap][i].use(this);
+                gp.om.obj[gp.currentMap][i] = null;
             }
 
             // INVENTORY ITEMS
@@ -324,14 +324,14 @@ public class Player extends LivingEntity {
 
                 if (inventory.size() != maxInventorySize) {
 
-                    inventory.add(gp.obj[gp.currentMap][i]);
+                    inventory.add(gp.om.obj[gp.currentMap][i]);
                     gp.playSE(1);
-                    text = "Got a " + gp.obj[gp.currentMap][i].name + "!";
+                    text = "Got a " + gp.om.obj[gp.currentMap][i].name + "!";
                 } else {
                     text = "Your inventory is full";
                 }
                 gp.ui.addMessage(text);
-                gp.obj[gp.currentMap][i] = null;
+                gp.om.obj[gp.currentMap][i] = null;
             }
         }
     }
@@ -341,17 +341,17 @@ public class Player extends LivingEntity {
             if(i != 999) { // will always be 999 unless player comes in contact with an object
                 attackCancled = true;
                 gp.gameState = GameState.DIALOGUE;
-                gp.npc[gp.currentMap][i].speak();
+                gp.em.npc[gp.currentMap][i].speak();
             }
         }
     }
     public void interactMonster(int i) {
 
         if(i != 999) { // will always be 999 unless player comes in contact with an object
-            if(!invincible && !gp.monster[gp.currentMap][i].dying){ // cant take damage while monster is dying, or they're invisible
+            if(!invincible && !gp.em.monster[gp.currentMap][i].dying){ // cant take damage while monster is dying, or they're invisible
                 gp.playSE(6);
 
-                int damage = gp.monster[gp.currentMap][i].attack - defense;
+                int damage = gp.em.monster[gp.currentMap][i].attack - defense;
                 if(damage < 0) {
                     damage = 0;
                 }
@@ -371,24 +371,24 @@ public class Player extends LivingEntity {
     }
     public void damageMonster(int i, int attack) {
         if(i != 999) {
-            if(!gp.monster[gp.currentMap][i].invincible) {
+            if(!gp.em.monster[gp.currentMap][i].invincible) {
                 gp.playSE(5);
 
-                int damage = attack - gp.monster[gp.currentMap][i].defense;
+                int damage = attack - gp.em.monster[gp.currentMap][i].defense;
                 if(damage < 0) {
                     damage = 0;
                 }
-                gp.monster[gp.currentMap][i].life -= damage;
+                gp.em.monster[gp.currentMap][i].life -= damage;
                 gp.ui.addMessage(damage + " damage!");
 
-                gp.monster[gp.currentMap][i].invincible = true;
-                gp.monster[gp.currentMap][i].damageReaction();
+                gp.em.monster[gp.currentMap][i].invincible = true;
+                gp.em.monster[gp.currentMap][i].damageReaction();
 
-                if(gp.monster[gp.currentMap][i].life <= 0){
-                    gp.monster[gp.currentMap][i].dying = true;
-                    gp.ui.addMessage("Killed the "+ gp.monster[gp.currentMap][i].name + "!");
-                    gp.ui.addMessage("Exp "+ gp.monster[gp.currentMap][i].exp);
-                    exp += gp.monster[gp.currentMap][i].exp;
+                if(gp.em.monster[gp.currentMap][i].life <= 0){
+                    gp.em.monster[gp.currentMap][i].dying = true;
+                    gp.ui.addMessage("Killed the "+ gp.em.monster[gp.currentMap][i].name + "!");
+                    gp.ui.addMessage("Exp "+ gp.em.monster[gp.currentMap][i].exp);
+                    exp += gp.em.monster[gp.currentMap][i].exp;
                     checkLevelUp();
                 }
             }
@@ -396,28 +396,28 @@ public class Player extends LivingEntity {
     }
     public void damageCritter(int i) {
         if(i != 999) {
-            if(!gp.critter[gp.currentMap][i].invincible) {
+            if(!gp.em.critter[gp.currentMap][i].invincible) {
                 gp.playSE(5);
-                gp.critter[gp.currentMap][i].life -= 1;
-                gp.critter[gp.currentMap][i].invincible = true;
-                gp.critter[gp.currentMap][i].damageReaction();
+                gp.em.critter[gp.currentMap][i].life -= 1;
+                gp.em.critter[gp.currentMap][i].invincible = true;
+                gp.em.critter[gp.currentMap][i].damageReaction();
             }
-            if(gp.critter[gp.currentMap][i].life <= 0){
-                gp.critter[gp.currentMap][i].dying = true;
+            if(gp.em.critter[gp.currentMap][i].life <= 0){
+                gp.em.critter[gp.currentMap][i].dying = true;
             }
         }
     }
     public void damageInteractiveTile(int i) {
-        if(i != 999 && gp.iTile[gp.currentMap][i].destructible
-                && gp.iTile[gp.currentMap][i].isCorrectItem(this) && !gp.iTile[gp.currentMap][i].invincible) {
-            gp.iTile[gp.currentMap][i].playSE();
-            gp.iTile[gp.currentMap][i].life--;
-            gp.iTile[gp.currentMap][i].invincible = true;
+        if(i != 999 && gp.em.iTile[gp.currentMap][i].destructible
+                && gp.em.iTile[gp.currentMap][i].isCorrectItem(this) && !gp.em.iTile[gp.currentMap][i].invincible) {
+            gp.em.iTile[gp.currentMap][i].playSE();
+            gp.em.iTile[gp.currentMap][i].life--;
+            gp.em.iTile[gp.currentMap][i].invincible = true;
 
-            generateParticle(gp.iTile[gp.currentMap][i], gp.iTile[gp.currentMap][i]);
+            generateParticle(gp.em.iTile[gp.currentMap][i], gp.em.iTile[gp.currentMap][i]);
 
-            if(gp.iTile[gp.currentMap][i].life == 0) {
-                gp.iTile[gp.currentMap][i] = gp.iTile[gp.currentMap][i].getDestroyedForm();
+            if(gp.em.iTile[gp.currentMap][i].life == 0) {
+                gp.em.iTile[gp.currentMap][i] = gp.em.iTile[gp.currentMap][i].getDestroyedForm();
             }
         }
     }

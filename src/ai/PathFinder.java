@@ -85,10 +85,10 @@ public class PathFinder {
                 node[col][row].solid = true; // set tiles with collision true as solid objects
             }
             // CHECK INTERACTIVE TILES
-            for(int i = 0; i < gp.iTile[1].length; i++) {
-                if(gp.iTile[gp.currentMap][i]!= null && gp.iTile[gp.currentMap][i].destructible) {
-                    int itCol = gp.iTile[gp.currentMap][i].worldX/gp.tileSize;
-                    int itRow = gp.iTile[gp.currentMap][i].worldY/gp.tileSize;
+            for(int i = 0; i < gp.em.iTile[1].length; i++) {
+                if(gp.em.iTile[gp.currentMap][i]!= null && gp.em.iTile[gp.currentMap][i].destructible) {
+                    int itCol = gp.em.iTile[gp.currentMap][i].worldX/gp.tileSize;
+                    int itRow = gp.em.iTile[gp.currentMap][i].worldY/gp.tileSize;
                     node[itCol][itRow].solid = true;
                 }
             }

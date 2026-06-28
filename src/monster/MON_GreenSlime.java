@@ -75,7 +75,7 @@ public class MON_GreenSlime extends LivingEntity {
             int i = new Random().nextInt(200) + 1;
             if (i > 197 && !projectile.alive && shotAvailableCounter == 30) {
                 projectile.set(worldX, worldY, direction, true, this);
-                gp.projectileList.add(projectile);
+                gp.em.projectileList.add(projectile);
                 shotAvailableCounter = 0;
             }
         } else {

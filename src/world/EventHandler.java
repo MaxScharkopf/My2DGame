@@ -58,7 +58,7 @@ public class EventHandler {
             else if(hit(0,23,12, "up")){healingPool(GameState.DIALOGUE);}
             else if(hit(0,10,39, "any")){teleport(1, 12, 13);}
             else if(hit(1, 12, 13, "any")){teleport(0,10,39);}
-            else if(hit(1, 12, 9, "up")){speak(gp.npc[1][0]);}
+            else if(hit(1, 12, 9, "up")){speak(gp.em.npc[1][0]);}
         }
     }
     public boolean hit(int map, int col, int row, String reqDirection) {
