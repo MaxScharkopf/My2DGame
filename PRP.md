@@ -140,9 +140,9 @@ These are the planned features/refactors in priority order. Each one gets its ow
   - `ObjectManager`: owns obj[][]
   - GamePanel.update() slimmed from ~65 lines to 3; accessed via gp.em and gp.om
 
-### Phase 4 — Systems
-- [ ] **`feature/combat-system`** — Centralize combat logic (damage calculation) into a `CombatSystem` class instead of spreading it across Player, Entity, and Monster
-- [ ] **`feature/game-loop-refactor`** — Clean up the game loop, possibly extract update and render phases
+### Phase 4 — Systems ✅ COMPLETE — merged to dev 2026-06-28
+- [x] **`feature/combat-system`** — CombatSystem centralizes hitMonster/hitPlayer/hitCritter and calcDamage; Player, LivingEntity, Projectile delegate to gp.combat
+- [x] **`feature/game-loop-refactor`** — Renderer class owns tempScreen, g2, entity sort/draw loop, drawToScreen; GamePanel.run() calls renderer.draw() + renderer.drawToScreen()
 
 ---
 
@@ -166,5 +166,6 @@ These are the planned features/refactors in priority order. Each one gets its ow
 | 2026-06-28 | Phase 1 complete. EntityType enum, GameState enum, and 5 core interfaces (IUpdatable, IDrawable, ILiving, ICombatant, IUsable) added. All interfaces Javadoc'd. Merged to main. |
 | 2026-06-28 | Phase 2 complete. 10 classes moved from `main/` and `tile/` into dedicated packages: audio/, config/, input/, physics/, ui/, util/, world/. GamePanel, Entity, Player imports updated. Merged to dev. |
 | 2026-06-28 | Phase 3 complete. Entity split into LivingEntity + ItemEntity. EntityManager/ObjectManager extracted from GamePanel. GamePanel.update() down to 3 lines. Merged to dev. |
+| 2026-06-28 | Phase 4 complete. CombatSystem centralizes all damage logic. Renderer extracted render pipeline from GamePanel. GamePanel down to ~130 lines. Merged to dev. |
 
 > **Update this table at the end of every session.**
