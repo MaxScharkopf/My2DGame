@@ -1,10 +1,11 @@
 package objects;
 
-import entity.Entity;
 import entity.EntityType;
+import entity.ItemEntity;
+import entity.LivingEntity;
 import main.GamePanel;
 
-public class OBJ_Coin_Bronze extends Entity {
+public class OBJ_Coin_Bronze extends ItemEntity {
 
     GamePanel gp;
 
@@ -17,7 +18,9 @@ public class OBJ_Coin_Bronze extends Entity {
         value = 1;
         down1 = setup("/objects/coin_bronze", gp.tileSize, gp.tileSize);
     }
-    public void use(Entity entity) {
+
+    @Override
+    public void use(LivingEntity entity) {
         gp.playSE(1);
         gp.ui.addMessage("Coin " + value);
         gp.player.coin += value;

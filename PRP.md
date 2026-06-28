@@ -35,24 +35,25 @@ A 2D top-down RPG written in Java (Swing / AWT). No external game engine. The ga
 - Merge feature → dev via pull request or direct merge once the feature compiles and works.
 - Merge dev → main only at milestones.
 
-**Pending remote task:** On GitHub, change the default branch from `master` to `main` in repo Settings → Branches, then run:
-```
-git push origin --delete master
-```
-
 ---
 
 ## Codebase Map
 
 ```
 src/
-  main/         # Core systems — GamePanel, Main, KeyHandler, UI, Sound, Config,
-                #   CollisionChecker, AssetSetter, EventHandler, UtilityTool
+  main/         # GamePanel, Main, GameState — core loop and entry point only
+  input/        # KeyHandler
+  audio/        # Sound
+  ui/           # UI
+  config/       # Config
+  physics/      # CollisionChecker
+  util/         # UtilityTool
+  world/        # AssetSetter, EventHandler, EventRect, TileManager
   entity/       # Entity base class + Player, NPCs, Projectile, Particle, interfaces
   objects/      # All item/object classes (OBJ_*)
   monster/      # Monster classes (MON_*)
   critters/     # Critter classes (CRIT_*)
-  tile/         # Tile, TileManager
+  tile/         # Tile (data class only — TileManager moved to world/)
   tiles_interactive/ # InteractiveTile + IT_* subclasses
   ai/           # PathFinder, Node
 
@@ -115,26 +116,33 @@ These are the planned features/refactors in priority order. Each one gets its ow
   - `IProjectile` expanded with `haveResource()`, extends `IUpdatable`
   - All interfaces have Javadoc on the type and each method
 
-### Phase 2 — Package Restructure
-- [ ] **`feature/package-restructure`** — Move classes to proper packages:
-  - `engine/` → GamePanel, Main (keep minimal)
-  - `input/` → KeyHandler
-  - `audio/` → Sound
-  - `ui/` → UI
-  - `config/` → Config
-  - `physics/` → CollisionChecker
-  - `world/` → AssetSetter, EventHandler, EventRect, TileManager
+### Phase 2 — Package Restructure ✅ COMPLETE — merged to dev 2026-06-28
+- [x] **`feature/package-restructure`** — Classes moved out of `main` into dedicated packages:
+  - `input/` ← KeyHandler
+  - `audio/` ← Sound
+  - `ui/` ← UI
+  - `config/` ← Config
+  - `physics/` ← CollisionChecker
+  - `util/` ← UtilityTool
+  - `world/` ← AssetSetter, EventHandler, EventRect, TileManager (from `tile/`)
+  - `GamePanel`, `Main`, `GameState` remain in `main`
+  - Entity.java: `import main.UtilityTool` → `import util.UtilityTool`
+  - Player.java: `import main.KeyHandler` → `import input.KeyHandler`
+  - GamePanel.java: added all new package imports
 
-### Phase 3 — Entity Hierarchy
-- [ ] **`feature/entity-split`** — Split `Entity` into role-specific abstract classes:
-  - `LivingEntity extends Entity` — for things that have HP (player, monster, npc)
-  - `ItemEntity extends Entity` — for objects/items
-  - `ProjectileEntity extends Entity` — for projectiles
-- [ ] **`feature/gamepanel-slim`** — Extract entity management out of GamePanel into dedicated managers (e.g. `EntityManager`, `ObjectManager`)
+### Phase 3 — Entity Hierarchy ✅ COMPLETE — merged to dev 2026-06-28
+- [x] **`feature/entity-split`** — Split `Entity` into role-specific abstract classes:
+  - `LivingEntity extends Entity` — HP, stats, movement, combat, dialogue, inventory
+  - `ItemEntity extends Entity` — attackValue, defenseValue, price, value
+  - `Projectile extends LivingEntity` (projectiles carry useCost, extend LivingEntity)
+- [x] **`feature/gamepanel-slim`** — Extracted entity arrays into dedicated managers:
+  - `EntityManager`: owns npc[][], monster[][], critter[][], iTile[][], particleList, projectileList; handles all update loops
+  - `ObjectManager`: owns obj[][]
+  - GamePanel.update() slimmed from ~65 lines to 3; accessed via gp.em and gp.om
 
-### Phase 4 — Systems
-- [ ] **`feature/combat-system`** — Centralize combat logic (damage calculation) into a `CombatSystem` class instead of spreading it across Player, Entity, and Monster
-- [ ] **`feature/game-loop-refactor`** — Clean up the game loop, possibly extract update and render phases
+### Phase 4 — Systems ✅ COMPLETE — merged to dev 2026-06-28
+- [x] **`feature/combat-system`** — CombatSystem centralizes hitMonster/hitPlayer/hitCritter and calcDamage; Player, LivingEntity, Projectile delegate to gp.combat
+- [x] **`feature/game-loop-refactor`** — Renderer class owns tempScreen, g2, entity sort/draw loop, drawToScreen; GamePanel.run() calls renderer.draw() + renderer.drawToScreen()
 
 ---
 
@@ -156,5 +164,8 @@ These are the planned features/refactors in priority order. Each one gets its ow
 |------|--------------|
 | 2026-06-28 | Initial PRP created. Baseline committed. Branch structure (main/dev) set up. Remote `master` deleted. |
 | 2026-06-28 | Phase 1 complete. EntityType enum, GameState enum, and 5 core interfaces (IUpdatable, IDrawable, ILiving, ICombatant, IUsable) added. All interfaces Javadoc'd. Merged to main. |
+| 2026-06-28 | Phase 2 complete. 10 classes moved from `main/` and `tile/` into dedicated packages: audio/, config/, input/, physics/, ui/, util/, world/. GamePanel, Entity, Player imports updated. Merged to dev. |
+| 2026-06-28 | Phase 3 complete. Entity split into LivingEntity + ItemEntity. EntityManager/ObjectManager extracted from GamePanel. GamePanel.update() down to 3 lines. Merged to dev. |
+| 2026-06-28 | Phase 4 complete. CombatSystem centralizes all damage logic. Renderer extracted render pipeline from GamePanel. GamePanel down to ~130 lines. Merged to dev. |
 
 > **Update this table at the end of every session.**

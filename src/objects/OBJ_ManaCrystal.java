@@ -1,10 +1,11 @@
 package objects;
 
-import entity.Entity;
 import entity.EntityType;
+import entity.ItemEntity;
+import entity.LivingEntity;
 import main.GamePanel;
 
-public class OBJ_ManaCrystal extends Entity {
+public class OBJ_ManaCrystal extends ItemEntity {
 
     GamePanel gp;
 
@@ -19,10 +20,11 @@ public class OBJ_ManaCrystal extends Entity {
         image = setup("/objects/manacrystal_full", gp.tileSize, gp.tileSize);
         image2 = setup("/objects/manacrystal_blank", gp.tileSize, gp.tileSize);
     }
-    public void use(Entity entity) {
 
+    @Override
+    public void use(LivingEntity entity) {
         gp.playSE(2);
-        gp.ui.addMessage("Mana "+ value);
+        gp.ui.addMessage("Mana " + value);
         entity.mana += value;
     }
 }

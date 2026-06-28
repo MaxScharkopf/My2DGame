@@ -1,4 +1,4 @@
-package main;
+package audio;
 
 import java.io.IOException;
 import java.net.URL;
@@ -13,7 +13,7 @@ public class Sound {
     Clip clip;
     URL[] soundURL = new URL[30];
     FloatControl fc;
-    int volumeScale = 3;
+    public int volumeScale = 3;
     float volume;
 
     public Sound() {
@@ -48,11 +48,9 @@ public class Sound {
         }
     }
     public void play() {
-
         clip.start();
     }
     public void loop() {
-
         clip.loop(Clip.LOOP_CONTINUOUSLY);
     }
     public void stop() {

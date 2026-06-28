@@ -1,12 +1,11 @@
 package objects;
 
-import entity.Entity;
+import entity.ItemEntity;
 import main.GamePanel;
 
-public class OBJ_Door extends Entity {
+public class OBJ_Door extends ItemEntity {
 
-    GamePanel gp;
-    public OBJ_Door(GamePanel gp){
+    public OBJ_Door(GamePanel gp) {
         super(gp);
 
         name = "Door";

@@ -1,12 +1,12 @@
 package critters;
 
-import entity.Entity;
 import entity.EntityType;
+import entity.LivingEntity;
 import main.GamePanel;
 
 import java.util.Random;
 
-public class CRIT_Butterfly extends Entity {
+public class CRIT_Butterfly extends LivingEntity {
     GamePanel gp;
 
     public CRIT_Butterfly(GamePanel gp) {
