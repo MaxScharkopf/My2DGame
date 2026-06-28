@@ -4,6 +4,7 @@ import ai.PathFinder;
 import audio.Sound;
 import combat.CombatSystem;
 import config.Config;
+import config.SaveData;
 import entity.Player;
 import input.KeyHandler;
 import physics.CollisionChecker;
@@ -54,6 +55,7 @@ public class GamePanel extends JPanel implements Runnable {
     public AssetSetter      aSetter  = new AssetSetter(this);
     public UI               ui       = new UI(this);
     public Config           config   = new Config(this);
+    public SaveData         saveData = new SaveData(this);
     public PathFinder       pFinder  = new PathFinder(this);
     Thread gameThread;
 
