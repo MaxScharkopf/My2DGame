@@ -11,9 +11,9 @@ public class EventHandler {
     GamePanel gp;
     EventRect[][][] eventRect;
 
-    int previousEventX, previousEventY;
+    public int previousEventX, previousEventY;
     boolean canTouchEvent = true;
-    int tempMap, tempCol, tempRow;
+    public int tempMap, tempCol, tempRow;
 
     public EventHandler(GamePanel gp) {
         this.gp = gp;

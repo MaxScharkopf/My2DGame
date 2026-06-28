@@ -32,7 +32,7 @@ public class UI {
     public int playerSlotRow = 0;
     public int npcSlotCol = 0;
     public int npcSlotRow = 0;
-    int subState = 0;
+    public int subState = 0;
     int counter = 0;
     public Entity npc;
 
