@@ -144,6 +144,18 @@ These are the planned features/refactors in priority order. Each one gets its ow
 - [x] **`feature/combat-system`** — CombatSystem centralizes hitMonster/hitPlayer/hitCritter and calcDamage; Player, LivingEntity, Projectile delegate to gp.combat
 - [x] **`feature/game-loop-refactor`** — Renderer class owns tempScreen, g2, entity sort/draw loop, drawToScreen; GamePanel.run() calls renderer.draw() + renderer.drawToScreen()
 
+### Phase 5 — UI Split & Persistence (in progress)
+- [ ] **`feature/phase-5` commit 1: UI split** — Extract self-contained screen classes from `UI.java`:
+  - `HUD` — owns heart/crystal images, message list, `drawPlayerLife`, `drawMessage`
+  - `TitleScreen` — owns `titleScreenState`, both title screen states
+  - `GameOverScreen` — owns game-over draw
+  - `UI` becomes coordinator: routes to screen classes, keeps shared state (commandNum, subState, etc.)
+- [ ] **`feature/phase-5` commit 2: Save/Load** — Implement `SaveData` in `config/`:
+  - Saves: map, player position, stats, inventory, equipped items to `save.properties`
+  - Loads: restores all of the above, re-runs AssetSetter, starts music
+  - Auto-save on every map transition; LOAD GAME on title screen hooks into `SaveData.load()`
+- [ ] **Input cleanup** _(future)_ — Decouple input from draw: `enterPressed` checks in `drawOptionsScreen` and `drawTradeScreen` should move to `KeyHandler`; draw methods should not consume input state.
+
 ---
 
 ## Working Conventions
