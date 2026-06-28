@@ -64,16 +64,7 @@ public class GamePanel extends JPanel implements Runnable{
     public ArrayList<Entity> projectileList = new ArrayList<>();
 
     // GAME STATE
-    public int gameState;
-    public final int titleState = 0;
-    public final int playState = 1;
-    public final int pauseState = 2;
-    public final int dialogueState = 3;
-    public final int characterState = 4;
-    public final int optionsState = 5;
-    public final int gameOverState = 6;
-    public final int transitionState = 7;
-    public final int tradeState = 9;
+    public GameState gameState;
 
     // Constructor
     public GamePanel (){
@@ -94,7 +85,7 @@ public class GamePanel extends JPanel implements Runnable{
         aSetter.setInteractiveTile();
 
 
-        gameState = titleState;
+        gameState = GameState.TITLE;
 
         tempScreen = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB);
         g2 = (Graphics2D)tempScreen.getGraphics();
@@ -179,7 +170,7 @@ public class GamePanel extends JPanel implements Runnable{
     }
     public void update(){
 
-        if(gameState == playState) {
+        if(gameState == GameState.PLAY) {
             player.update();
 
             // NPC
@@ -240,7 +231,7 @@ public class GamePanel extends JPanel implements Runnable{
                 }
             }
         }
-        if(gameState == pauseState) {
+        if(gameState == GameState.PAUSE) {
 
         }
     }
@@ -255,7 +246,7 @@ public class GamePanel extends JPanel implements Runnable{
         }
 
         // TITLE SCREEN 1
-        if(gameState == titleState) {
+        if(gameState == GameState.TITLE) {
             ui.draw(g2);
         }
         // OTHERS

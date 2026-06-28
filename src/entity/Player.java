@@ -1,6 +1,7 @@
 package entity;
 
 import main.GamePanel;
+import main.GameState;
 import main.KeyHandler;
 import objects.*;
 
@@ -251,7 +252,7 @@ public class Player extends Entity{
             mana = maxMana;
         }
         if(life <= 0) {
-            gp.gameState = gp.gameOverState;
+            gp.gameState = GameState.GAME_OVER;
             gp.playSE(14);
             gp.stopMusic();
             gp.ui.commandNum = -1;
@@ -339,7 +340,7 @@ public class Player extends Entity{
 
             if(i != 999) { // will always be 999 unless player comes in contact with an object
                 attackCancled = true;
-                gp.gameState = gp.dialogueState;
+                gp.gameState = GameState.DIALOGUE;
                 gp.npc[gp.currentMap][i].speak();
             }
         }
@@ -430,7 +431,7 @@ public class Player extends Entity{
             attack = getAttack();
             defense = getDefense();
 
-            gp.gameState = gp.dialogueState;
+            gp.gameState = GameState.DIALOGUE;
             gp.playSE(9);
             gp.ui.currentDialogue= " You are level " + level + " now!\n"
                     + "You feel stronger";

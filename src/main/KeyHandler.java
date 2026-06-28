@@ -26,34 +26,34 @@ public class KeyHandler implements KeyListener {
         int code = e.getKeyCode(); // return number of key pressed
 
         //TITLE STATE
-        if (gp.gameState == gp.titleState) {
+        if (gp.gameState == GameState.TITLE) {
             titleState(code);
         }
         // PLAY STATE
-        else if (gp.gameState == gp.playState) {
+        else if (gp.gameState == GameState.PLAY) {
             playState(code);
         }
         // PAUSE STATE
-        else if (gp.gameState == gp.pauseState) {
+        else if (gp.gameState == GameState.PAUSE) {
             pauseState(code);
         }
         // DIALOGUE STATE
-        else if (gp.gameState == gp.dialogueState) {
+        else if (gp.gameState == GameState.DIALOGUE) {
             dialogueState(code);
         }
         // CHARACTER STATE
-        else if (gp.gameState == gp.characterState) {
+        else if (gp.gameState == GameState.CHARACTER) {
             characterState(code);
         }
         // OPTIONS STATE
-        else if (gp.gameState == gp.optionsState) {
+        else if (gp.gameState == GameState.OPTIONS) {
             optionsState(code);
         }
         // GAME OVER STATE
-        else if (gp.gameState == gp.gameOverState) {
+        else if (gp.gameState == GameState.GAME_OVER) {
             gameOverState(code);
         }
-        else if(gp.gameState == gp.tradeState) {
+        else if(gp.gameState == GameState.TRADE) {
             tradeState(code);
         }
     }
@@ -109,15 +109,15 @@ public class KeyHandler implements KeyListener {
                 if(gp.ui.commandNum != 3) {
                     if (gp.ui.commandNum == 0) {
                         System.out.println("Do fighter stuff");
-                        gp.gameState = gp.playState;
+                        gp.gameState = GameState.PLAY;
                     }
                     if (gp.ui.commandNum == 1) {
                         System.out.println("Do Theif stuff");
-                        gp.gameState = gp.playState;
+                        gp.gameState = GameState.PLAY;
                     }
                     if (gp.ui.commandNum == 2) {
                         System.out.println("Do Sorcerer stuff");
-                        gp.gameState = gp.playState;
+                        gp.gameState = GameState.PLAY;
                     }
                     gp.playMusic(0);
                 }
@@ -150,13 +150,13 @@ public class KeyHandler implements KeyListener {
             shotKeyPressed = true;
         }
         if (code == KeyEvent.VK_ESCAPE) {
-            gp.gameState = gp.optionsState;
+            gp.gameState = GameState.OPTIONS;
         }
         if (code == KeyEvent.VK_P) {
-            gp.gameState = gp.pauseState;
+            gp.gameState = GameState.PAUSE;
         }
         if (code == KeyEvent.VK_C) {
-            gp.gameState = gp.characterState;
+            gp.gameState = GameState.CHARACTER;
         }
         if (code == KeyEvent.VK_T) {
             if(!showDebugText) {
@@ -177,7 +177,7 @@ public class KeyHandler implements KeyListener {
     }
     public void pauseState(int code) {
         if (code == KeyEvent.VK_P) {
-            gp.gameState = gp.playState;
+            gp.gameState = GameState.PLAY;
         }
     }
     public void dialogueState(int code) {
@@ -187,19 +187,19 @@ public class KeyHandler implements KeyListener {
             if (npcIndex != 999) {
                 int dialogIndex = gp.npc[gp.currentMap][npcIndex].dialogueIndex;
                 if (gp.npc[gp.currentMap][npcIndex].dialogues[dialogIndex] == null) {
-                    gp.gameState = gp.playState;
+                    gp.gameState = GameState.PLAY;
                     gp.npc[gp.currentMap][npcIndex].dialogueIndex = 0;
                 } else if (gp.npc[npcIndex] != null) {
                     gp.npc[gp.currentMap][npcIndex].speak();
                 }
             } else {
-                gp.gameState = gp.playState;
+                gp.gameState = GameState.PLAY;
             }
         }
     }
     public void characterState(int code) {
         if (code == KeyEvent.VK_C) {
-            gp.gameState = gp.playState;
+            gp.gameState = GameState.PLAY;
         }
         if(code == KeyEvent.VK_ENTER) {
             gp.player.selectItem();
@@ -209,7 +209,7 @@ public class KeyHandler implements KeyListener {
     public void optionsState(int code) {
 
         if(code == KeyEvent.VK_ESCAPE) {
-            gp.gameState = gp.playState;
+            gp.gameState = GameState.PLAY;
         }
         if(code == KeyEvent.VK_ENTER) {
             enterPressed = true;
@@ -278,11 +278,11 @@ public class KeyHandler implements KeyListener {
         }
         if(code == KeyEvent.VK_ENTER) {
             if(gp.ui.commandNum == 0) {
-                gp.gameState = gp.playState;
+                gp.gameState = GameState.PLAY;
                 gp.retry();
             }
             else if(gp.ui.commandNum == 1) {
-                gp.gameState = gp.titleState;
+                gp.gameState = GameState.TITLE;
                 gp.restart();
             }
         }

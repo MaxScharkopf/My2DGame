@@ -76,50 +76,50 @@ public class UI {
         g2.setColor(Color.white);
 
         // TITLE STATE
-        if(gp.gameState == gp.titleState) {
+        if(gp.gameState == GameState.TITLE) {
             drawTitleScreen();
         }
 
         // PLAY STATE
-        if(gp.gameState == gp.playState) {
+        if(gp.gameState == GameState.PLAY) {
             drawPlayerLife();
             drawMessage();
         }
         // PAUSE STATE
-        if(gp.gameState == gp.pauseState) {
+        if(gp.gameState == GameState.PAUSE) {
             drawPlayerLife();
             drawPauseScreen();
         }
 
         // DIALOGUE STATE
-        if(gp.gameState == gp.dialogueState) {
+        if(gp.gameState == GameState.DIALOGUE) {
             drawPlayerLife();
             drawDialogueScreen();
         }
 
         // CHARACTER STATE
-        if(gp.gameState == gp.characterState) {
+        if(gp.gameState == GameState.CHARACTER) {
             drawCharacterScreen();
             drawInventory(gp.player, true);
         }
 
         // OPTIONS STATE
-        if(gp.gameState == gp.optionsState) {
+        if(gp.gameState == GameState.OPTIONS) {
             drawOptionsScreen();
         }
 
         // GAME OVER STATE
-        if(gp.gameState == gp.gameOverState) {
+        if(gp.gameState == GameState.GAME_OVER) {
             drawGameOverScreen();
         }
 
         // TRANSITION STATE
-        if(gp.gameState == gp.transitionState) {
+        if(gp.gameState == GameState.TRANSITION) {
             drawTransition();
         }
 
         // TRADE STATE
-        if(gp.gameState == gp.tradeState) {
+        if(gp.gameState == GameState.TRADE) {
             drawTradeScreen();
         }
     }
@@ -654,7 +654,7 @@ public class UI {
                 g2.drawString(">", textX - 25, textY);
             }
             if(gp.keyH.enterPressed) {
-                gp.gameState = gp.playState;
+                gp.gameState = GameState.PLAY;
                 commandNum = 0;
             }
         }
@@ -772,7 +772,7 @@ public class UI {
             }
             if(gp.keyH.enterPressed) {
                 subState = 0;
-                gp.gameState = gp.titleState;
+                gp.gameState = GameState.TITLE;
                 gp.stopMusic();
             }
         }
@@ -800,7 +800,7 @@ public class UI {
 
         if(counter == 50) {
             counter = 0;
-            gp.gameState = gp.playState;
+            gp.gameState = GameState.PLAY;
             gp.currentMap = gp.eHandler.tempMap;
             gp.player.worldX = gp.tileSize * gp.eHandler.tempCol;
             gp.player.worldY = gp.tileSize * gp.eHandler.tempRow;
@@ -862,7 +862,7 @@ public class UI {
             }
             if(gp.keyH.enterPressed) {
                 commandNum = 0;
-                gp.gameState = gp.dialogueState;
+                gp.gameState = GameState.DIALOGUE;
                 currentDialogue = "Come again, hehe!";
             }
         }
@@ -911,13 +911,13 @@ public class UI {
             if(gp.keyH.enterPressed) {
                 if(npc.inventory.get(itemIndex).price > gp.player.coin) {
                     subState = 0;
-                    gp.gameState = gp.dialogueState;
+                    gp.gameState = GameState.DIALOGUE;
                     currentDialogue = " You trying to scam me or something?";
                     drawDialogueScreen();
                 }
                 else if(gp.player.inventory.size() == gp.player.maxInventorySize) {
                     subState = 0;
-                    gp.gameState = gp.dialogueState;
+                    gp.gameState = GameState.DIALOGUE;
                     currentDialogue = " Your inventory is full";
                 }
                 else {
@@ -978,7 +978,7 @@ public class UI {
                         gp.player.inventory.get(itemIndex) == gp.player.currentShield){
                     commandNum = 0;
                     subState = 0;
-                    gp.gameState = gp.dialogueState;
+                    gp.gameState = GameState.DIALOGUE;
                     currentDialogue = "You cannot sell equipped items!";
                 }
                 else {

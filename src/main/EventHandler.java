@@ -52,8 +52,8 @@ public class EventHandler {
         }
 
         if(canTouchEvent) {
-            if(hit(0,27, 16, "right")) {damagePit(gp.dialogueState);}
-            else if(hit(0,23,12, "up")){healingPool(gp.dialogueState);}
+            if(hit(0,27, 16, "right")) {damagePit(GameState.DIALOGUE);}
+            else if(hit(0,23,12, "up")){healingPool(GameState.DIALOGUE);}
             else if(hit(0,10,39, "any")){teleport(1, 12, 13);}
             else if(hit(1, 12, 13, "any")){teleport(0,10,39);}
             else if(hit(1, 12, 9, "up")){speak(gp.npc[1][0]);}
@@ -90,7 +90,7 @@ public class EventHandler {
 
     public void teleport(int map, int col, int row) {
 
-        gp.gameState = gp.transitionState;
+        gp.gameState = GameState.TRANSITION;
         tempMap = map;
         tempCol = col;
         tempRow = row;
@@ -98,7 +98,7 @@ public class EventHandler {
         gp.playSE(15);
 
     }
-    public void damagePit(int gameState) {
+    public void damagePit(GameState gameState) {
 
         gp.gameState = gameState;
         gp.ui.currentDialogue = "You fall into a pit";
@@ -107,7 +107,7 @@ public class EventHandler {
         gp.player.invincible = true;
 
     }
-    public void healingPool(int gameState) {
+    public void healingPool(GameState gameState) {
         if(gp.keyH.enterPressed) {
             gp.playSE(10);
             gp.player.attackCancled = true;
@@ -121,7 +121,7 @@ public class EventHandler {
     }
     public void speak(Entity entity) {
         if(gp.keyH.enterPressed) {
-            gp.gameState = gp.dialogueState;
+            gp.gameState = GameState.DIALOGUE;
             gp.player.attackCancled = true;
             entity.speak();
         }

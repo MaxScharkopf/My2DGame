@@ -1,6 +1,7 @@
 package entity;
 
 import main.GamePanel;
+import main.GameState;
 import objects.*;
 
 public class NPC_Merchant extends Entity{
@@ -42,7 +43,7 @@ public class NPC_Merchant extends Entity{
     public void speak() {
 
         super.speak();
-        gp.gameState = gp.tradeState;
+        gp.gameState = GameState.TRADE;
         gp.ui.npc = this;
     }
 }

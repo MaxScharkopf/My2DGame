@@ -3,6 +3,7 @@ package objects;
 import entity.Entity;
 import entity.EntityType;
 import main.GamePanel;
+import main.GameState;
 
 public class OBJ_Potion_Red extends Entity {
 
@@ -23,7 +24,7 @@ public class OBJ_Potion_Red extends Entity {
         price = 10;
     }
     public void use(Entity entity) {
-        gp.gameState = gp.dialogueState;
+        gp.gameState = GameState.DIALOGUE;
 
         if(gp.player.life != gp.player.maxLife){
             gp.ui.currentDialogue = "You drink the " + name + "!\n" +
