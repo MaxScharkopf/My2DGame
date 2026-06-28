@@ -130,12 +130,15 @@ These are the planned features/refactors in priority order. Each one gets its ow
   - Player.java: `import main.KeyHandler` → `import input.KeyHandler`
   - GamePanel.java: added all new package imports
 
-### Phase 3 — Entity Hierarchy
-- [ ] **`feature/entity-split`** — Split `Entity` into role-specific abstract classes:
-  - `LivingEntity extends Entity` — for things that have HP (player, monster, npc)
-  - `ItemEntity extends Entity` — for objects/items
-  - `ProjectileEntity extends Entity` — for projectiles
-- [ ] **`feature/gamepanel-slim`** — Extract entity management out of GamePanel into dedicated managers (e.g. `EntityManager`, `ObjectManager`)
+### Phase 3 — Entity Hierarchy ✅ COMPLETE — merged to dev 2026-06-28
+- [x] **`feature/entity-split`** — Split `Entity` into role-specific abstract classes:
+  - `LivingEntity extends Entity` — HP, stats, movement, combat, dialogue, inventory
+  - `ItemEntity extends Entity` — attackValue, defenseValue, price, value
+  - `Projectile extends LivingEntity` (projectiles carry useCost, extend LivingEntity)
+- [x] **`feature/gamepanel-slim`** — Extracted entity arrays into dedicated managers:
+  - `EntityManager`: owns npc[][], monster[][], critter[][], iTile[][], particleList, projectileList; handles all update loops
+  - `ObjectManager`: owns obj[][]
+  - GamePanel.update() slimmed from ~65 lines to 3; accessed via gp.em and gp.om
 
 ### Phase 4 — Systems
 - [ ] **`feature/combat-system`** — Centralize combat logic (damage calculation) into a `CombatSystem` class instead of spreading it across Player, Entity, and Monster
@@ -162,5 +165,6 @@ These are the planned features/refactors in priority order. Each one gets its ow
 | 2026-06-28 | Initial PRP created. Baseline committed. Branch structure (main/dev) set up. Remote `master` deleted. |
 | 2026-06-28 | Phase 1 complete. EntityType enum, GameState enum, and 5 core interfaces (IUpdatable, IDrawable, ILiving, ICombatant, IUsable) added. All interfaces Javadoc'd. Merged to main. |
 | 2026-06-28 | Phase 2 complete. 10 classes moved from `main/` and `tile/` into dedicated packages: audio/, config/, input/, physics/, ui/, util/, world/. GamePanel, Entity, Player imports updated. Merged to dev. |
+| 2026-06-28 | Phase 3 complete. Entity split into LivingEntity + ItemEntity. EntityManager/ObjectManager extracted from GamePanel. GamePanel.update() down to 3 lines. Merged to dev. |
 
 > **Update this table at the end of every session.**
