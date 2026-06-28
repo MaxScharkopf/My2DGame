@@ -22,10 +22,10 @@ public class Projectile extends LivingEntity {
     @Override
     public void update() {
         if (user == gp.player) {
-            int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
+            int monsterIndex = gp.cChecker.checkEntity(this, gp.em.monster);
             if (monsterIndex != 999) {
                 gp.player.damageMonster(monsterIndex, attack);
-                generateParticle(user.projectile, gp.monster[gp.currentMap][monsterIndex]);
+                generateParticle(user.projectile, gp.em.monster[gp.currentMap][monsterIndex]);
                 alive = false;
             }
         } else {
