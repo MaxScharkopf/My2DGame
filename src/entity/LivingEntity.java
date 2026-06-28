@@ -124,13 +124,7 @@ public abstract class LivingEntity extends Entity implements ILiving, ICombatant
     }
 
     public void damagePlayer(int attack) {
-        if (!gp.player.invincible) {
-            gp.playSE(6);
-            int damage = attack - gp.player.defense;
-            if (damage < 0) damage = 0;
-            gp.player.life -= damage;
-            gp.player.invincible = true;
-        }
+        gp.combat.hitPlayer(attack);
     }
 
     @Override

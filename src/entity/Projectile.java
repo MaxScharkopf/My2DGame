@@ -24,14 +24,14 @@ public class Projectile extends LivingEntity {
         if (user == gp.player) {
             int monsterIndex = gp.cChecker.checkEntity(this, gp.em.monster);
             if (monsterIndex != 999) {
-                gp.player.damageMonster(monsterIndex, attack);
+                gp.combat.hitMonster(gp.em.monster[gp.currentMap][monsterIndex], attack, gp.player);
                 generateParticle(user.projectile, gp.em.monster[gp.currentMap][monsterIndex]);
                 alive = false;
             }
         } else {
             boolean contactPlayer = gp.cChecker.checkPlayer(this);
-            if (!gp.player.invincible && contactPlayer) {
-                damagePlayer(attack);
+            if (contactPlayer) {
+                gp.combat.hitPlayer(attack);
                 generateParticle(user.projectile, gp.player);
                 alive = false;
             }

@@ -346,18 +346,8 @@ public class Player extends LivingEntity {
         }
     }
     public void interactMonster(int i) {
-
-        if(i != 999) { // will always be 999 unless player comes in contact with an object
-            if(!invincible && !gp.em.monster[gp.currentMap][i].dying){ // cant take damage while monster is dying, or they're invisible
-                gp.playSE(6);
-
-                int damage = gp.em.monster[gp.currentMap][i].attack - defense;
-                if(damage < 0) {
-                    damage = 0;
-                }
-                life -= damage;
-                invincible = true;
-            }
+        if (i != 999 && !gp.em.monster[gp.currentMap][i].dying) {
+            gp.combat.hitPlayer(gp.em.monster[gp.currentMap][i].attack);
         }
     }
     public void interactCritter(int i) {
@@ -370,41 +360,13 @@ public class Player extends LivingEntity {
         }
     }
     public void damageMonster(int i, int attack) {
-        if(i != 999) {
-            if(!gp.em.monster[gp.currentMap][i].invincible) {
-                gp.playSE(5);
-
-                int damage = attack - gp.em.monster[gp.currentMap][i].defense;
-                if(damage < 0) {
-                    damage = 0;
-                }
-                gp.em.monster[gp.currentMap][i].life -= damage;
-                gp.ui.addMessage(damage + " damage!");
-
-                gp.em.monster[gp.currentMap][i].invincible = true;
-                gp.em.monster[gp.currentMap][i].damageReaction();
-
-                if(gp.em.monster[gp.currentMap][i].life <= 0){
-                    gp.em.monster[gp.currentMap][i].dying = true;
-                    gp.ui.addMessage("Killed the "+ gp.em.monster[gp.currentMap][i].name + "!");
-                    gp.ui.addMessage("Exp "+ gp.em.monster[gp.currentMap][i].exp);
-                    exp += gp.em.monster[gp.currentMap][i].exp;
-                    checkLevelUp();
-                }
-            }
+        if (i != 999) {
+            gp.combat.hitMonster(gp.em.monster[gp.currentMap][i], attack, this);
         }
     }
     public void damageCritter(int i) {
-        if(i != 999) {
-            if(!gp.em.critter[gp.currentMap][i].invincible) {
-                gp.playSE(5);
-                gp.em.critter[gp.currentMap][i].life -= 1;
-                gp.em.critter[gp.currentMap][i].invincible = true;
-                gp.em.critter[gp.currentMap][i].damageReaction();
-            }
-            if(gp.em.critter[gp.currentMap][i].life <= 0){
-                gp.em.critter[gp.currentMap][i].dying = true;
-            }
+        if (i != 999) {
+            gp.combat.hitCritter(gp.em.critter[gp.currentMap][i]);
         }
     }
     public void damageInteractiveTile(int i) {

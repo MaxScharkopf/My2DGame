@@ -3,6 +3,7 @@ package main;
 import ai.PathFinder;
 import audio.Sound;
 import config.Config;
+import combat.CombatSystem;
 import entity.Entity;
 import entity.Player;
 import input.KeyHandler;
@@ -65,6 +66,7 @@ public class GamePanel extends JPanel implements Runnable{
     public Player player = new Player(this,keyH);
     public EntityManager em = new EntityManager(this);
     public ObjectManager om = new ObjectManager(this);
+    public CombatSystem combat = new CombatSystem(this);
     ArrayList<Entity> entityList = new ArrayList<>();
 
     // GAME STATE
