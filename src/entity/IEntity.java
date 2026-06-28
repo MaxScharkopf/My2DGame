@@ -1,5 +1,4 @@
 package entity;
 
-public interface IEntity {
-
+public interface IEntity extends IUpdatable, IDrawable {
 }

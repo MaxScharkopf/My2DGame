@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Entity implements IEntity{
+public class Entity implements IEntity, ILiving, ICombatant, IUsable {
 
     GamePanel gp;
     public BufferedImage left1, left2, right1, right2, up1, down1, up2, down2;
@@ -84,9 +84,26 @@ public class Entity implements IEntity{
         this.gp = gp;
     }
 
+    // ILiving
+    @Override public int getLife() { return life; }
+    @Override public int getMaxLife() { return maxLife; }
+    @Override public boolean isAlive() { return alive; }
+    @Override public boolean isDying() { return dying; }
+    @Override
+    public void takeDamage(int damage) {
+        if (!invincible) {
+            life -= damage;
+            invincible = true;
+        }
+    }
+
+    // ICombatant
+    @Override public void damageReaction() {}
+
+    // IUsable
+    @Override public void use(Entity entity) {}
+
     public void setAction() {}
-    public void damageReaction() {}
-    public void use(Entity entity) {}
     public void checkDrop() {}
     public void dropItem(Entity droppedItem) {
         for(int i = 0; i < gp.obj[1].length; i++) {

@@ -1,15 +1,7 @@
 package entity;
 
-import main.GamePanel;
-
-public interface IProjectile extends IEntity{
-
-    /*
-    *
-    *
-     */
-    public void set(int worldX, int worldY, String direction, boolean alive, Entity user);
-    public void update();
-
-    public void subtractResource(Entity user);
+public interface IProjectile extends IUpdatable {
+    void set(int worldX, int worldY, String direction, boolean alive, Entity user);
+    void subtractResource(Entity user);
+    boolean haveResource(Entity user);
 }
