@@ -1,7 +1,7 @@
 package tiles_interactive;
 
-import entity.Entity;
 import entity.EntityType;
+import entity.LivingEntity;
 import main.GamePanel;
 
 import java.awt.*;
@@ -21,7 +21,7 @@ public class IT_DryTree extends InteractiveTile{
         destructible = true;
         life = 3;
     }
-    public boolean isCorrectItem(Entity entity) {
+    public boolean isCorrectItem(LivingEntity entity) {
 
         boolean isCorrectItem = false;
 

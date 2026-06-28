@@ -11,7 +11,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 
-public class Player extends Entity{
+public class Player extends LivingEntity {
 
     KeyHandler keyH;
 
@@ -447,13 +447,13 @@ public class Player extends Entity{
 
             if(selectedItem.type == EntityType.SWORD || selectedItem.type == EntityType.AXE) {
 
-                currentWeapon = selectedItem; // change sword
+                currentWeapon = (ItemEntity) selectedItem; // change sword
                 attack = getAttack(); // update attack
                 getPlayerAttackImage();
             }
             if(selectedItem.type == EntityType.SHIELD) {
 
-                currentShield = selectedItem; // change shield
+                currentShield = (ItemEntity) selectedItem; // change shield
                 defense = getDefense(); // update defense
             }
             if(selectedItem.type == EntityType.CONSUMABLE) {

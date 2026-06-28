@@ -1,12 +1,11 @@
 package tiles_interactive;
 
-import entity.Entity;
+import entity.LivingEntity;
 import main.GamePanel;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
-public class InteractiveTile extends Entity {
+public class InteractiveTile extends LivingEntity {
 
     GamePanel gp;
     public boolean destructible = false;
@@ -15,36 +14,39 @@ public class InteractiveTile extends Entity {
         super(gp);
         this.gp = gp;
     }
-    public boolean isCorrectItem(Entity entity) {
 
-        boolean isCorrectItem = false;
-        return isCorrectItem;
+    public boolean isCorrectItem(LivingEntity entity) {
+        return false;
     }
+
     public void playSE() {}
+
     public InteractiveTile getDestroyedForm() {
-        InteractiveTile tile = null;
-        return tile;
+        return null;
     }
+
+    @Override
     public void update() {
-        if(invincible) {
+        if (invincible) {
             invincibleCounter++;
-            if(invincibleCounter > 20) {
+            if (invincibleCounter > 20) {
                 invincible = false;
                 invincibleCounter = 0;
             }
         }
     }
-    public void draw(Graphics2D g2) {
 
+    @Override
+    public void draw(Graphics2D g2) {
         int screenX = worldX - gp.player.worldX + gp.player.screenX;
         int screenY = worldY - gp.player.worldY + gp.player.screenY;
 
-        if(worldX + gp.tileSize > gp.player.worldX - gp.player.screenX && // add gp.tileSize to extend screen render by 1
-                worldX - gp.tileSize < gp.player.worldX + gp.player.screenX && // sub gp.tileSize to extend screen render by 1
-                worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
-                worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
+        if (worldX + gp.tileSize > gp.player.worldX - gp.player.screenX &&
+            worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
+            worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
+            worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
 
-            g2.drawImage(down1, screenX, screenY,null);
+            g2.drawImage(down1, screenX, screenY, null);
         }
     }
 }

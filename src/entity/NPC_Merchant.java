@@ -4,7 +4,7 @@ import main.GamePanel;
 import main.GameState;
 import objects.*;
 
-public class NPC_Merchant extends Entity{
+public class NPC_Merchant extends LivingEntity {
 
     public NPC_Merchant(GamePanel gp) {
 

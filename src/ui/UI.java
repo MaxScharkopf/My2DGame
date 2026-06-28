@@ -1,6 +1,8 @@
 package ui;
 
 import entity.Entity;
+import entity.ItemEntity;
+import entity.LivingEntity;
 import main.GamePanel;
 import main.GameState;
 import objects.OBJ_Coin_Bronze;
@@ -34,7 +36,7 @@ public class UI {
     public int npcSlotRow = 0;
     public int subState = 0;
     int counter = 0;
-    public Entity npc;
+    public LivingEntity npc;
 
     public UI(GamePanel gp) {
         this.gp = gp;
@@ -403,7 +405,7 @@ public class UI {
 
         g2.drawImage(gp.player.currentShield.down1, tailX - gp.tileSize, textY-34, null);
     }
-    public void drawInventory(Entity entity, boolean cursor) {
+    public void drawInventory(LivingEntity entity, boolean cursor) {
 
         int frameX = 0;
         int frameY = 0;
@@ -818,13 +820,13 @@ public class UI {
             drawSubWindow(x , y, width, height);
             g2.drawImage(coin, x+10,y+8, 32, 32, null);
 
-            int price = npc.inventory.get(itemIndex).price;
+            int price = ((ItemEntity) npc.inventory.get(itemIndex)).price;
             String text = "" +price;
             x = getXforAlignToRightText(text, gp.tileSize * 8 - 20);
             g2.drawString(text,x,y+34);
 
             if(gp.keyH.enterPressed) {
-                if(npc.inventory.get(itemIndex).price > gp.player.coin) {
+                if(((ItemEntity) npc.inventory.get(itemIndex)).price > gp.player.coin) {
                     subState = 0;
                     gp.gameState = GameState.DIALOGUE;
                     currentDialogue = " You trying to scam me or something?";
@@ -836,7 +838,7 @@ public class UI {
                     currentDialogue = " Your inventory is full";
                 }
                 else {
-                    gp.player.coin -= npc.inventory.get(itemIndex).price;
+                    gp.player.coin -= ((ItemEntity) npc.inventory.get(itemIndex)).price;
                     gp.player.inventory.add(npc.inventory.get(itemIndex));
                 }
             }
@@ -875,7 +877,7 @@ public class UI {
             drawSubWindow(x , y, width, height);
             g2.drawImage(coin, x+10,y + 10, 32, 32, null);
 
-            int price = gp.player.inventory.get(itemIndex).price/2;
+            int price = ((ItemEntity) gp.player.inventory.get(itemIndex)).price / 2;
             String text = "" + price;
             x = getXforAlignToRightText(text, gp.tileSize * 18 - 20);
             g2.drawString(text,x,y+34);
