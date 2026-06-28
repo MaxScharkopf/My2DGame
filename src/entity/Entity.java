@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Entity {
+public class Entity implements IEntity{
 
     GamePanel gp;
     public BufferedImage left1, left2, right1, right2, up1, down1, up2, down2;
@@ -34,7 +34,7 @@ public class Entity {
     public boolean alive = true;
     public boolean dying = false;
     boolean hpBarOn = false;
-    public boolean immuneCollision = false;
+    public boolean immuneCollision = true; // testing purposes immune to tile collisions
     public boolean onPath = false;
 
     // COUNTER
