@@ -2,7 +2,7 @@ package entity;
 
 import main.GamePanel;
 import main.GameState;
-import main.KeyHandler;
+import input.KeyHandler;
 import objects.*;
 
 

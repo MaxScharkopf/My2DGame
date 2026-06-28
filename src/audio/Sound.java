@@ -1,4 +1,4 @@
-package main;
+package audio;
 
 import java.io.IOException;
 import java.net.URL;
@@ -48,11 +48,9 @@ public class Sound {
         }
     }
     public void play() {
-
         clip.start();
     }
     public void loop() {
-
         clip.loop(Clip.LOOP_CONTINUOUSLY);
     }
     public void stop() {
