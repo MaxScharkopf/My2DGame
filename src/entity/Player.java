@@ -109,7 +109,7 @@ public class Player extends Entity{
     }
     public void getPlayerAttackImage() {
 
-        if(currentWeapon.type == type_sword) {
+        if(currentWeapon.type == EntityType.SWORD) {
             attackUp1 = setup("/player/boy_attack_up_1", gp.tileSize, gp.tileSize * 2);
             attackUp2 = setup("/player/boy_attack_up_2", gp.tileSize, gp.tileSize * 2);
             attackDown1 = setup("/player/boy_attack_down_1", gp.tileSize, gp.tileSize * 2);
@@ -119,7 +119,7 @@ public class Player extends Entity{
             attackRight1 = setup("/player/boy_attack_right_1", gp.tileSize * 2, gp.tileSize);
             attackRight2 = setup("/player/boy_attack_right_2", gp.tileSize * 2, gp.tileSize);
         }
-        if(currentWeapon.type == type_axe) {
+        if(currentWeapon.type == EntityType.AXE) {
             attackUp1 = setup("/player/boy_axe_up_1", gp.tileSize, gp.tileSize * 2);
             attackUp2 = setup("/player/boy_axe_up_2", gp.tileSize, gp.tileSize * 2);
             attackDown1 = setup("/player/boy_axe_down_1", gp.tileSize, gp.tileSize * 2);
@@ -311,7 +311,7 @@ public class Player extends Entity{
         if(i != 999) { // will always be 999 unless player comes in contact with an object
 
             // PICKUP ONLY ITEMS
-            if(gp.obj[gp.currentMap][i].type == type_pickUpOnly) {
+            if(gp.obj[gp.currentMap][i].type == EntityType.PICK_UP_ONLY) {
 
                 gp.obj[gp.currentMap][i].use(this);
                 gp.obj[gp.currentMap][i] = null;
@@ -444,18 +444,18 @@ public class Player extends Entity{
 
             Entity selectedItem = inventory.get(itemIndex); // assign the item to a variable
 
-            if(selectedItem.type == type_sword || selectedItem.type == type_axe) { //check sword
+            if(selectedItem.type == EntityType.SWORD || selectedItem.type == EntityType.AXE) {
 
                 currentWeapon = selectedItem; // change sword
                 attack = getAttack(); // update attack
                 getPlayerAttackImage();
             }
-            if(selectedItem.type == type_shield) { // check shield
+            if(selectedItem.type == EntityType.SHIELD) {
 
                 currentShield = selectedItem; // change shield
                 defense = getDefense(); // update defense
             }
-            if(selectedItem.type == type_consumable){
+            if(selectedItem.type == EntityType.CONSUMABLE) {
 
                 selectedItem.use(this);
                 //inventory.remove(itemIndex);  .. don't want to remove potion if health is full

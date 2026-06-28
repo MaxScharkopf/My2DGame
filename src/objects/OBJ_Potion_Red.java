@@ -1,6 +1,7 @@
 package objects;
 
 import entity.Entity;
+import entity.EntityType;
 import main.GamePanel;
 
 public class OBJ_Potion_Red extends Entity {
@@ -14,7 +15,7 @@ public class OBJ_Potion_Red extends Entity {
 
         this.gp = gp;
 
-        type = type_consumable;
+        type = EntityType.CONSUMABLE;
         name = "Red Potion";
         value = 5;
         down1 = setup("/objects/potion_red", gp.tileSize, gp.tileSize);

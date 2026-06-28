@@ -1,6 +1,7 @@
 package objects;
 
 import entity.Entity;
+import entity.EntityType;
 import main.GamePanel;
 
 public class OBJ_Axe extends Entity  {
@@ -9,7 +10,7 @@ public class OBJ_Axe extends Entity  {
 
         super(gp);
 
-        type = type_axe;
+        type = EntityType.AXE;
         name = "Woodcutter's Axe" ;
         down1 = setup("/objects/weapon/axe", gp.tileSize, gp.tileSize);
         attackValue = 2;

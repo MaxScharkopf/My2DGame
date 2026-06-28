@@ -1,6 +1,7 @@
 package critters;
 
 import entity.Entity;
+import entity.EntityType;
 import main.GamePanel;
 
 import java.util.Random;
@@ -13,7 +14,7 @@ public class CRIT_Butterfly extends Entity {
         this.gp = gp;
 
         // SLIME STATUS
-        type = type_critter;
+        type = EntityType.CRITTER;
         name = "Butterfly";
         speed = 2;
         maxLife = 1;

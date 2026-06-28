@@ -1,6 +1,7 @@
 package objects;
 
 import entity.Entity;
+import entity.EntityType;
 import main.GamePanel;
 
 public class OBJ_ManaCrystal extends Entity {
@@ -11,7 +12,7 @@ public class OBJ_ManaCrystal extends Entity {
         super(gp);
         this.gp = gp;
 
-        type = type_pickUpOnly;
+        type = EntityType.PICK_UP_ONLY;
         name = "Mana Crystal";
         value = 1;
         down1 = setup("/objects/manacrystal_full", gp.tileSize, gp.tileSize);

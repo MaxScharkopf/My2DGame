@@ -1,6 +1,7 @@
 package objects;
 
 import entity.Entity;
+import entity.EntityType;
 import main.GamePanel;
 
 public class OBJ_Coin_Bronze extends Entity {
@@ -11,7 +12,7 @@ public class OBJ_Coin_Bronze extends Entity {
         super(gp);
         this.gp = gp;
 
-        type =  type_pickUpOnly;
+        type = EntityType.PICK_UP_ONLY;
         name = "Bronze coin";
         value = 1;
         down1 = setup("/objects/coin_bronze", gp.tileSize, gp.tileSize);

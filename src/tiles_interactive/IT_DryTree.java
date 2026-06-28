@@ -1,6 +1,7 @@
 package tiles_interactive;
 
 import entity.Entity;
+import entity.EntityType;
 import main.GamePanel;
 
 import java.awt.*;
@@ -24,7 +25,7 @@ public class IT_DryTree extends InteractiveTile{
 
         boolean isCorrectItem = false;
 
-        if(entity.currentWeapon.type == type_axe) {
+        if(entity.currentWeapon.type == EntityType.AXE) {
             isCorrectItem = true;
         }
 

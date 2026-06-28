@@ -77,16 +77,7 @@ public class Entity implements IEntity{
     public int price;
 
     // TYPE
-    public int type; // 0 = player, 1 = npc, 2 = monster; 3 = critters
-    public final int type_player = 0;
-    public final int type_npc = 1;
-    public final int type_monster = 2;
-    public final int type_critter = 3;
-    public final int type_sword = 4;
-    public final int type_axe = 5;
-    public final int type_shield = 6;
-    public final int type_consumable = 7;
-    public final int type_pickUpOnly = 8;
+    public EntityType type;
 
 
     public Entity(GamePanel gp){
@@ -150,7 +141,7 @@ public class Entity implements IEntity{
         gp.cChecker.checkEntity(this, gp.iTile);
         boolean contactPlayer = gp.cChecker.checkPlayer(this);
 
-        if(this.type == type_monster && contactPlayer) {
+        if(this.type == EntityType.MONSTER && contactPlayer) {
             damagePlayer(attack); // melee damage
         }
     }
@@ -236,7 +227,7 @@ public class Entity implements IEntity{
             }
 
             // Monster HP bar
-            if(type == type_monster && hpBarOn) {
+            if(type == EntityType.MONSTER && hpBarOn) {
 
                 double oneScale = (double)gp.tileSize/maxLife; // scale of health bar
                 double hpBarValue = oneScale * life; // current length of bar

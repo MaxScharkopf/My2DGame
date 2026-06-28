@@ -1,6 +1,7 @@
 package objects;
 
 import entity.Entity;
+import entity.EntityType;
 import main.GamePanel;
 
 import javax.imageio.ImageIO;
@@ -14,7 +15,7 @@ public class OBJ_Heart extends Entity {
         super(gp);
         this.gp = gp;
 
-        type = type_pickUpOnly;
+        type = EntityType.PICK_UP_ONLY;
         name = "Heart";
         value = 2;
         down1 = setup("/objects/heart_full", gp.tileSize, gp.tileSize);

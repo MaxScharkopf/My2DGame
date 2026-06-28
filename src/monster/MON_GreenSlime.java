@@ -1,6 +1,7 @@
 package monster;
 
 import entity.Entity;
+import entity.EntityType;
 import main.GamePanel;
 import objects.*;
 
@@ -14,7 +15,7 @@ public class MON_GreenSlime extends Entity {
         this.gp = gp;
 
         // SLIME STATUS
-        type = type_monster;
+        type = EntityType.MONSTER;
         name = "Green Slime";
         speed = 1;
         maxLife = 4;
