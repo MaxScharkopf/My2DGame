@@ -74,7 +74,9 @@ public class KeyHandler implements KeyListener {
                     gp.ui.titleScreen.titleScreenState = 1;
                 }
                 if (gp.ui.commandNum == 1) {
-
+                    if (gp.saveData.hasSaveFile()) {
+                        gp.saveData.load();
+                    }
                 }
                 if (gp.ui.commandNum == 2) {
                     System.exit(0);
