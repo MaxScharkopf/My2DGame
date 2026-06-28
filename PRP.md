@@ -106,17 +106,14 @@ Player, NPC, Monster, Object all extend `Entity` and inherit fields they don't n
 
 These are the planned features/refactors in priority order. Each one gets its own `feature/` branch.
 
-### Phase 1 — Foundation (Interfaces & Enums)
-- [ ] **`feature/entity-type-enum`** — Replace `type_*` int constants with `EntityType` enum
-- [ ] **`feature/gamestate-enum`** — Replace `gameState` int constants with `GameState` enum
-- [ ] **`feature/interfaces-core`** — Flesh out meaningful interfaces:
-  - `IUpdatable` → `update()`
-  - `IDrawable` → `draw(Graphics2D g2)`
-  - `ICollidable` → `solidArea`, `collisionOn`
-  - `ILiving` → `life`, `maxLife`, `alive`, `dying`, `takeDamage(int)`
-  - `ICombatant` → `attack`, `defense`, `damageReaction()`
-  - `IInventory` → `inventory`, `pickUp()`, `use()`
-  - `IProjectile` (already exists, needs expansion)
+### Phase 1 — Foundation (Interfaces & Enums) ✅ COMPLETE — merged to main 2026-06-28
+- [x] **`feature/entity-type-enum`** — `EntityType` enum replaces 9 `type_*` int constants
+- [x] **`feature/gamestate-enum`** — `GameState` enum replaces 9 `*State` int constants
+- [x] **`feature/interfaces-core`** — Core interfaces defined and wired to `Entity`:
+  - `IUpdatable`, `IDrawable`, `ILiving`, `ICombatant`, `IUsable` (new)
+  - `IEntity` now extends `IUpdatable + IDrawable` (was empty)
+  - `IProjectile` expanded with `haveResource()`, extends `IUpdatable`
+  - All interfaces have Javadoc on the type and each method
 
 ### Phase 2 — Package Restructure
 - [ ] **`feature/package-restructure`** — Move classes to proper packages:
@@ -157,6 +154,7 @@ These are the planned features/refactors in priority order. Each one gets its ow
 
 | Date | What Was Done |
 |------|--------------|
-| 2026-06-28 | Initial PRP created. Baseline committed. Branch structure (main/dev) set up. Remote `master` rename pending GitHub settings change. |
+| 2026-06-28 | Initial PRP created. Baseline committed. Branch structure (main/dev) set up. Remote `master` deleted. |
+| 2026-06-28 | Phase 1 complete. EntityType enum, GameState enum, and 5 core interfaces (IUpdatable, IDrawable, ILiving, ICombatant, IUsable) added. All interfaces Javadoc'd. Merged to main. |
 
 > **Update this table at the end of every session.**
