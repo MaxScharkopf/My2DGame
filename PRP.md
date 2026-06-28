@@ -35,24 +35,25 @@ A 2D top-down RPG written in Java (Swing / AWT). No external game engine. The ga
 - Merge feature → dev via pull request or direct merge once the feature compiles and works.
 - Merge dev → main only at milestones.
 
-**Pending remote task:** On GitHub, change the default branch from `master` to `main` in repo Settings → Branches, then run:
-```
-git push origin --delete master
-```
-
 ---
 
 ## Codebase Map
 
 ```
 src/
-  main/         # Core systems — GamePanel, Main, KeyHandler, UI, Sound, Config,
-                #   CollisionChecker, AssetSetter, EventHandler, UtilityTool
+  main/         # GamePanel, Main, GameState — core loop and entry point only
+  input/        # KeyHandler
+  audio/        # Sound
+  ui/           # UI
+  config/       # Config
+  physics/      # CollisionChecker
+  util/         # UtilityTool
+  world/        # AssetSetter, EventHandler, EventRect, TileManager
   entity/       # Entity base class + Player, NPCs, Projectile, Particle, interfaces
   objects/      # All item/object classes (OBJ_*)
   monster/      # Monster classes (MON_*)
   critters/     # Critter classes (CRIT_*)
-  tile/         # Tile, TileManager
+  tile/         # Tile (data class only — TileManager moved to world/)
   tiles_interactive/ # InteractiveTile + IT_* subclasses
   ai/           # PathFinder, Node
 
@@ -115,15 +116,19 @@ These are the planned features/refactors in priority order. Each one gets its ow
   - `IProjectile` expanded with `haveResource()`, extends `IUpdatable`
   - All interfaces have Javadoc on the type and each method
 
-### Phase 2 — Package Restructure
-- [ ] **`feature/package-restructure`** — Move classes to proper packages:
-  - `engine/` → GamePanel, Main (keep minimal)
-  - `input/` → KeyHandler
-  - `audio/` → Sound
-  - `ui/` → UI
-  - `config/` → Config
-  - `physics/` → CollisionChecker
-  - `world/` → AssetSetter, EventHandler, EventRect, TileManager
+### Phase 2 — Package Restructure ✅ COMPLETE — merged to dev 2026-06-28
+- [x] **`feature/package-restructure`** — Classes moved out of `main` into dedicated packages:
+  - `input/` ← KeyHandler
+  - `audio/` ← Sound
+  - `ui/` ← UI
+  - `config/` ← Config
+  - `physics/` ← CollisionChecker
+  - `util/` ← UtilityTool
+  - `world/` ← AssetSetter, EventHandler, EventRect, TileManager (from `tile/`)
+  - `GamePanel`, `Main`, `GameState` remain in `main`
+  - Entity.java: `import main.UtilityTool` → `import util.UtilityTool`
+  - Player.java: `import main.KeyHandler` → `import input.KeyHandler`
+  - GamePanel.java: added all new package imports
 
 ### Phase 3 — Entity Hierarchy
 - [ ] **`feature/entity-split`** — Split `Entity` into role-specific abstract classes:
@@ -156,5 +161,6 @@ These are the planned features/refactors in priority order. Each one gets its ow
 |------|--------------|
 | 2026-06-28 | Initial PRP created. Baseline committed. Branch structure (main/dev) set up. Remote `master` deleted. |
 | 2026-06-28 | Phase 1 complete. EntityType enum, GameState enum, and 5 core interfaces (IUpdatable, IDrawable, ILiving, ICombatant, IUsable) added. All interfaces Javadoc'd. Merged to main. |
+| 2026-06-28 | Phase 2 complete. 10 classes moved from `main/` and `tile/` into dedicated packages: audio/, config/, input/, physics/, ui/, util/, world/. GamePanel, Entity, Player imports updated. Merged to dev. |
 
 > **Update this table at the end of every session.**
