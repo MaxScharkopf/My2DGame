@@ -1,4 +1,7 @@
-package main;
+package input;
+
+import main.GamePanel;
+import main.GameState;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -23,33 +26,26 @@ public class KeyHandler implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
 
-        int code = e.getKeyCode(); // return number of key pressed
+        int code = e.getKeyCode();
 
-        //TITLE STATE
         if (gp.gameState == GameState.TITLE) {
             titleState(code);
         }
-        // PLAY STATE
         else if (gp.gameState == GameState.PLAY) {
             playState(code);
         }
-        // PAUSE STATE
         else if (gp.gameState == GameState.PAUSE) {
             pauseState(code);
         }
-        // DIALOGUE STATE
         else if (gp.gameState == GameState.DIALOGUE) {
             dialogueState(code);
         }
-        // CHARACTER STATE
         else if (gp.gameState == GameState.CHARACTER) {
             characterState(code);
         }
-        // OPTIONS STATE
         else if (gp.gameState == GameState.OPTIONS) {
             optionsState(code);
         }
-        // GAME OVER STATE
         else if (gp.gameState == GameState.GAME_OVER) {
             gameOverState(code);
         }
@@ -74,22 +70,18 @@ public class KeyHandler implements KeyListener {
                 }
             }
             if (code == KeyEvent.VK_ENTER) {
-                //START
                 if (gp.ui.commandNum == 0) {
-                    gp.ui.titleScreenState = 1; // change to next title screen
+                    gp.ui.titleScreenState = 1;
                 }
-                // LOAD
                 if (gp.ui.commandNum == 1) {
 
                 }
-                // QUIT
                 if (gp.ui.commandNum == 2) {
                     System.exit(0);
                 }
                 gp.playSE(4);
             }
         }
-        // CHARACTER SELECT
         else if (gp.ui.titleScreenState == 1) {
             if (code == KeyEvent.VK_W) {
                 gp.ui.commandNum--;
@@ -166,13 +158,11 @@ public class KeyHandler implements KeyListener {
                 showDebugText = false;
             }
         }
-        // REFRESH MAP FOR DEBUG AT RUNTIME
         if(code == KeyEvent.VK_R) {
             switch(gp.currentMap) {
                 case 0: gp.tileM.loadMap("/maps/worldV3.txt", 0); break;
                 case 1: gp.tileM.loadMap("/maps/interior01.txt", 1); break;
             }
-
         }
     }
     public void pauseState(int code) {

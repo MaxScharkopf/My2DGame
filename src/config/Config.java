@@ -1,4 +1,6 @@
-package main;
+package config;
+
+import main.GamePanel;
 
 import java.io.*;
 
@@ -8,7 +10,6 @@ public class Config {
 
     public Config (GamePanel gp) {
         this.gp = gp;
-
     }
 
     public void saveConfig() {
@@ -35,7 +36,6 @@ public class Config {
             bw.close();
 
         } catch (Exception e) {
-
             e.printStackTrace();
         }
     }
@@ -46,7 +46,7 @@ public class Config {
 
             String s = br.readLine();
 
-            // Full screeen
+            // Full screen
             if(s.equals("On")) {
                 gp.fullScreenOn = true;
             }
@@ -65,7 +65,6 @@ public class Config {
             br.close();
 
         } catch (IOException e){
-
             e.printStackTrace();
         }
     }

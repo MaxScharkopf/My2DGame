@@ -1,10 +1,18 @@
 package main;
 
 import ai.PathFinder;
+import audio.Sound;
+import config.Config;
 import entity.Entity;
 import entity.Player;
-import tile.TileManager;
+import input.KeyHandler;
+import physics.CollisionChecker;
 import tiles_interactive.InteractiveTile;
+import ui.UI;
+import util.UtilityTool;
+import world.AssetSetter;
+import world.EventHandler;
+import world.TileManager;
 
 import javax.swing.JPanel;
 import java.awt.*;
