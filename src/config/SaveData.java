@@ -12,39 +12,74 @@ import java.util.Properties;
 public class SaveData {
 
     GamePanel gp;
-    private static final String SAVE_FILE = "save.properties";
+    public int currentSlot = -1;
+    private static final int MAX_SLOTS = 4;
+
+    public static class SlotSummary {
+        public int level;
+        public int coin;
+        public String mapName;
+    }
 
     public SaveData(GamePanel gp) {
         this.gp = gp;
     }
 
-    public boolean hasSaveFile() {
-        return new File(SAVE_FILE).exists();
+    private String filePath(int slot) {
+        return "save_" + slot + ".properties";
+    }
+
+    public boolean hasSaveFile(int slot) {
+        return slot >= 0 && slot < MAX_SLOTS && new File(filePath(slot)).exists();
+    }
+
+    public SlotSummary getSlotSummary(int slot) {
+        if (!hasSaveFile(slot)) return null;
+        Properties props = new Properties();
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath(slot)))) {
+            props.load(br);
+        } catch (IOException e) {
+            return null;
+        }
+        SlotSummary s = new SlotSummary();
+        s.level   = Integer.parseInt(props.getProperty("player.level", "1"));
+        s.coin    = Integer.parseInt(props.getProperty("player.coin",  "0"));
+        s.mapName = props.getProperty("mapName", "Overworld");
+        return s;
+    }
+
+    public void clearSlot(int slot) {
+        File f = new File(filePath(slot));
+        if (f.exists()) f.delete();
     }
 
     public void save() {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(SAVE_FILE))) {
-            var p = gp.player;
+        if (currentSlot < 0 || currentSlot >= MAX_SLOTS) return;
 
-            bw.write("currentMap=" + gp.currentMap);               bw.newLine();
-            bw.write("player.worldX=" + p.worldX);                 bw.newLine();
-            bw.write("player.worldY=" + p.worldY);                 bw.newLine();
-            bw.write("player.direction=" + p.direction);           bw.newLine();
-            bw.write("player.life=" + p.life);                     bw.newLine();
-            bw.write("player.maxLife=" + p.maxLife);               bw.newLine();
-            bw.write("player.mana=" + p.mana);                     bw.newLine();
-            bw.write("player.maxMana=" + p.maxMana);               bw.newLine();
-            bw.write("player.coin=" + p.coin);                     bw.newLine();
-            bw.write("player.level=" + p.level);                   bw.newLine();
-            bw.write("player.exp=" + p.exp);                       bw.newLine();
-            bw.write("player.nextLevelExp=" + p.nextLevelExp);     bw.newLine();
-            bw.write("player.strength=" + p.strength);             bw.newLine();
-            bw.write("player.dexterity=" + p.dexterity);           bw.newLine();
-            bw.write("player.attack=" + p.attack);                 bw.newLine();
-            bw.write("player.defense=" + p.defense);               bw.newLine();
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath(currentSlot)))) {
+            var p = gp.player;
+            String mapName = gp.currentMap == 0 ? "Overworld" : "Interior";
+
+            bw.write("mapName=" + mapName);                                    bw.newLine();
+            bw.write("currentMap=" + gp.currentMap);                           bw.newLine();
+            bw.write("player.worldX=" + p.worldX);                            bw.newLine();
+            bw.write("player.worldY=" + p.worldY);                            bw.newLine();
+            bw.write("player.direction=" + p.direction);                       bw.newLine();
+            bw.write("player.life=" + p.life);                                bw.newLine();
+            bw.write("player.maxLife=" + p.maxLife);                          bw.newLine();
+            bw.write("player.mana=" + p.mana);                                bw.newLine();
+            bw.write("player.maxMana=" + p.maxMana);                          bw.newLine();
+            bw.write("player.coin=" + p.coin);                                bw.newLine();
+            bw.write("player.level=" + p.level);                              bw.newLine();
+            bw.write("player.exp=" + p.exp);                                  bw.newLine();
+            bw.write("player.nextLevelExp=" + p.nextLevelExp);                bw.newLine();
+            bw.write("player.strength=" + p.strength);                        bw.newLine();
+            bw.write("player.dexterity=" + p.dexterity);                      bw.newLine();
+            bw.write("player.attack=" + p.attack);                            bw.newLine();
+            bw.write("player.defense=" + p.defense);                          bw.newLine();
             bw.write("player.currentWeapon=" + p.currentWeapon.getClass().getSimpleName()); bw.newLine();
             bw.write("player.currentShield=" + p.currentShield.getClass().getSimpleName()); bw.newLine();
-            bw.write("player.inventorySize=" + p.inventory.size()); bw.newLine();
+            bw.write("player.inventorySize=" + p.inventory.size());            bw.newLine();
             for (int i = 0; i < p.inventory.size(); i++) {
                 bw.write("player.inventory." + i + "=" + p.inventory.get(i).getClass().getSimpleName());
                 bw.newLine();
@@ -54,9 +89,11 @@ public class SaveData {
         }
     }
 
-    public void load() {
+    public void load(int slot) {
+        currentSlot = slot;
+
         Properties props = new Properties();
-        try (BufferedReader br = new BufferedReader(new FileReader(SAVE_FILE))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath(slot)))) {
             props.load(br);
         } catch (IOException e) {
             return;
