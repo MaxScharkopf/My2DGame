@@ -1,20 +1,19 @@
 package monster;
 
-import entity.Entity;
 import entity.EntityType;
+import entity.LivingEntity;
 import main.GamePanel;
 import objects.*;
 
 import java.util.Random;
 
-public class MON_GreenSlime extends Entity {
+public class MON_GreenSlime extends LivingEntity {
     GamePanel gp;
 
     public MON_GreenSlime(GamePanel gp) {
         super(gp);
         this.gp = gp;
 
-        // SLIME STATUS
         type = EntityType.MONSTER;
         name = "Green Slime";
         speed = 1;
@@ -34,6 +33,7 @@ public class MON_GreenSlime extends Entity {
 
         getImage();
     }
+
     public void getImage() {
         up1 = setup("/monster/greenslime_down_1", gp.tileSize, gp.tileSize);
         up2 = setup("/monster/greenslime_down_2", gp.tileSize, gp.tileSize);
@@ -44,92 +44,69 @@ public class MON_GreenSlime extends Entity {
         right1 = setup("/monster/greenslime_down_1", gp.tileSize, gp.tileSize);
         right2 = setup("/monster/greenslime_down_2", gp.tileSize, gp.tileSize);
     }
-    public void update() {
 
+    @Override
+    public void update() {
         super.update();
 
         int xDistance = Math.abs(worldX - gp.player.worldX);
         int yDistance = Math.abs(worldY - gp.player.worldY);
-        int tileDistance = (xDistance + yDistance)/gp.tileSize;
+        int tileDistance = (xDistance + yDistance) / gp.tileSize;
 
-        if(!onPath && tileDistance < 5) {
-
+        if (!onPath && tileDistance < 5) {
             int i = new Random().nextInt(100) + 1;
-            if(i > 50) {
+            if (i > 50) {
                 onPath = true;
             }
         }
-        if(onPath && tileDistance > 20) {
+        if (onPath && tileDistance > 20) {
             onPath = false;
         }
     }
+
+    @Override
     public void setAction() {
-        if(onPath) {
-
-//            int goalCol = 12; // walk to location
-//            int goalRow = 9;
-
+        if (onPath) {
             int goalCol = (gp.player.worldX + gp.player.solidArea.x) / gp.tileSize;
             int goalRow = (gp.player.worldY + gp.player.solidArea.y) / gp.tileSize;
 
             searchPath(goalCol, goalRow);
 
-            int i = new Random().nextInt(200)+1;
-            if(i > 197 && !projectile.alive && shotAvailableCounter == 30) {
-
-                projectile.set(worldX, worldY, direction,true,this);
+            int i = new Random().nextInt(200) + 1;
+            if (i > 197 && !projectile.alive && shotAvailableCounter == 30) {
+                projectile.set(worldX, worldY, direction, true, this);
                 gp.projectileList.add(projectile);
                 shotAvailableCounter = 0;
             }
-        }
-        else {
+        } else {
             actionLockCounter++;
 
             if (actionLockCounter == 120) {
-
                 Random random = new Random();
-                int i = random.nextInt(100) + 1; // pick a num 1-100
+                int i = random.nextInt(100) + 1;
 
-                if (i <= 25) {
-                    direction = "up";
-                }
-                if (25 < i && i <= 50) {
-                    direction = "down";
-                }
-                if (50 < i && i <= 75) {
-                    direction = "left";
-                }
-                if (75 < i) {
-                    direction = "right";
-                }
+                if (i <= 25)              direction = "up";
+                if (25 < i && i <= 50)   direction = "down";
+                if (50 < i && i <= 75)   direction = "left";
+                if (75 < i)              direction = "right";
 
                 actionLockCounter = 0;
             }
         }
     }
+
+    @Override
     public void damageReaction() {
-
         actionLockCounter = 0;
-       // direction = gp.player.direction; // starts moving away from the player
-       // onPath = true; // player hits makes aggro
     }
+
+    @Override
     public void checkDrop() {
+        int i = new Random().nextInt(100) + 1;
 
-        // CAST A DICE ROLL
-        int i = new Random().nextInt(100)+1;
-
-        // SET THE MONSTER DROP
-        if(i < 50) {
-            dropItem(new OBJ_Coin_Bronze(gp));
-        }
-        if(i >= 50 && i < 75) {
-            dropItem(new OBJ_Heart(gp));
-        }
-        if(i >= 75 && i < 100) {
-            dropItem(new OBJ_ManaCrystal(gp));
-        }
-        if(i == 100) {
-            dropItem(new OBJ_Shield_Blue(gp));
-        }
+        if (i < 50)            dropItem(new OBJ_Coin_Bronze(gp));
+        if (i >= 50 && i < 75) dropItem(new OBJ_Heart(gp));
+        if (i >= 75 && i < 100) dropItem(new OBJ_ManaCrystal(gp));
+        if (i == 100)          dropItem(new OBJ_Shield_Blue(gp));
     }
 }

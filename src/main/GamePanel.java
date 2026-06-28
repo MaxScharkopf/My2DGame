@@ -4,6 +4,7 @@ import ai.PathFinder;
 import audio.Sound;
 import config.Config;
 import entity.Entity;
+import entity.LivingEntity;
 import entity.Player;
 import input.KeyHandler;
 import physics.CollisionChecker;
@@ -63,9 +64,9 @@ public class GamePanel extends JPanel implements Runnable{
     // ENTITY AND OBJECT
     public Player player = new Player(this,keyH);
     public Entity[][] obj = new Entity[maxMap][20];
-    public Entity[][] npc = new Entity[maxMap][10];
-    public Entity[][] monster = new Entity[maxMap][20]; // array of sprites
-    public Entity[][] critter = new Entity[maxMap][20];
+    public LivingEntity[][] npc = new LivingEntity[maxMap][10];
+    public LivingEntity[][] monster = new LivingEntity[maxMap][20];
+    public LivingEntity[][] critter = new LivingEntity[maxMap][20];
     public InteractiveTile[][] iTile = new InteractiveTile[maxMap][50];
     public ArrayList<Entity> particleList = new ArrayList<>();
     ArrayList<Entity> entityList = new ArrayList<>();

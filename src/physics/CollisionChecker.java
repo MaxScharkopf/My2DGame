@@ -1,6 +1,7 @@
 package physics;
 
 import entity.Entity;
+import entity.LivingEntity;
 import main.GamePanel;
 
 public class CollisionChecker {
@@ -11,18 +12,18 @@ public class CollisionChecker {
         this.gp = gp;
     }
 
-    public void checkTile(Entity entity) {
+    public void checkTile(LivingEntity entity) {
 
-        if(!entity.immuneCollision){
+        if (!entity.immuneCollision) {
             int entityLeftWorldX = entity.worldX + entity.solidArea.x;
             int entityRightWorldX = entityLeftWorldX + entity.solidArea.x + entity.solidArea.width;
             int entityTopWorldY = entity.worldY + entity.solidArea.y;
             int entityBottomWorldY = entity.worldY + entity.solidArea.y + entity.solidArea.height;
 
-            int entityLeftCol = entityLeftWorldX/gp.tileSize;
-            int entityRightCol = entityRightWorldX/gp.tileSize;
-            int entityTopRow = entityTopWorldY/gp.tileSize;
-            int entityBottomRow = entityBottomWorldY/gp.tileSize;
+            int entityLeftCol = entityLeftWorldX / gp.tileSize;
+            int entityRightCol = entityRightWorldX / gp.tileSize;
+            int entityTopRow = entityTopWorldY / gp.tileSize;
+            int entityBottomRow = entityBottomWorldY / gp.tileSize;
 
             int tileNum1, tileNum2;
 
@@ -63,12 +64,12 @@ public class CollisionChecker {
         }
     }
 
-    public int checkObject(Entity entity, boolean player) {
+    public int checkObject(LivingEntity entity, boolean player) {
 
         int index = 999;
 
-        for(int i = 0; i < gp.obj[1].length; i++) {
-            if(gp.obj[gp.currentMap][i] != null) {
+        for (int i = 0; i < gp.obj[1].length; i++) {
+            if (gp.obj[gp.currentMap][i] != null) {
 
                 entity.solidArea.x = entity.worldX + entity.solidArea.x;
                 entity.solidArea.y = entity.worldY + entity.solidArea.y;
@@ -77,10 +78,10 @@ public class CollisionChecker {
                 gp.obj[gp.currentMap][i].solidArea.y = gp.obj[gp.currentMap][i].worldY + gp.obj[gp.currentMap][i].solidArea.y;
 
                 switch (entity.direction) {
-                    case "up" -> {entity.solidArea.y -= entity.speed;}
-                    case "down" -> {entity.solidArea.y += entity.speed;}
-                    case "left" -> {entity.solidArea.x -= entity.speed;}
-                    case "right" -> {entity.solidArea.x += entity.speed;}
+                    case "up"    -> entity.solidArea.y -= entity.speed;
+                    case "down"  -> entity.solidArea.y += entity.speed;
+                    case "left"  -> entity.solidArea.x -= entity.speed;
+                    case "right" -> entity.solidArea.x += entity.speed;
                 }
 
                 if (entity.solidArea.intersects(gp.obj[gp.currentMap][i].solidArea)) {
@@ -102,7 +103,7 @@ public class CollisionChecker {
         return index;
     }
 
-    public int checkEntity(Entity entity, Entity[][] target) {
+    public int checkEntity(LivingEntity entity, Entity[][] target) {
         int index = 999;
 
         for (int i = 0; i < target[1].length; i++) {
@@ -115,14 +116,14 @@ public class CollisionChecker {
                 target[gp.currentMap][i].solidArea.y = target[gp.currentMap][i].worldY + target[gp.currentMap][i].solidArea.y;
 
                 switch (entity.direction) {
-                    case "up" -> {entity.solidArea.y -= entity.speed;}
-                    case "down" -> {entity.solidArea.y += entity.speed;}
-                    case "left" -> {entity.solidArea.x -= entity.speed;}
-                    case "right" -> {entity.solidArea.x += entity.speed;}
+                    case "up"    -> entity.solidArea.y -= entity.speed;
+                    case "down"  -> entity.solidArea.y += entity.speed;
+                    case "left"  -> entity.solidArea.x -= entity.speed;
+                    case "right" -> entity.solidArea.x += entity.speed;
                 }
 
                 if (entity.solidArea.intersects(target[gp.currentMap][i].solidArea)) {
-                    if(target[gp.currentMap][i] != entity) {
+                    if (target[gp.currentMap][i] != entity) {
                         entity.collisionOn = true;
                         index = i;
                     }
@@ -138,7 +139,7 @@ public class CollisionChecker {
         return index;
     }
 
-    public boolean checkPlayer(Entity entity) {
+    public boolean checkPlayer(LivingEntity entity) {
 
         boolean contactPlayer = false;
 
@@ -149,11 +150,12 @@ public class CollisionChecker {
         gp.player.solidArea.y = gp.player.worldY + gp.player.solidArea.y;
 
         switch (entity.direction) {
-            case "up" -> {entity.solidArea.y -= entity.speed;}
-            case "down" -> {entity.solidArea.y += entity.speed;}
-            case "left" -> {entity.solidArea.x -= entity.speed;}
-            case "right" -> {entity.solidArea.x += entity.speed;}
+            case "up"    -> entity.solidArea.y -= entity.speed;
+            case "down"  -> entity.solidArea.y += entity.speed;
+            case "left"  -> entity.solidArea.x -= entity.speed;
+            case "right" -> entity.solidArea.x += entity.speed;
         }
+
         if (entity.solidArea.intersects(gp.player.solidArea)) {
             entity.collisionOn = true;
             contactPlayer = true;

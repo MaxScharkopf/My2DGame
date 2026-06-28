@@ -1,17 +1,15 @@
 package objects;
 
-import entity.Entity;
 import entity.EntityType;
+import entity.ItemEntity;
+import entity.LivingEntity;
 import main.GamePanel;
 
-import javax.imageio.ImageIO;
-import java.io.IOException;
-
-public class OBJ_Heart extends Entity {
+public class OBJ_Heart extends ItemEntity {
 
     GamePanel gp;
 
-    public OBJ_Heart(GamePanel gp){
+    public OBJ_Heart(GamePanel gp) {
         super(gp);
         this.gp = gp;
 
@@ -23,10 +21,11 @@ public class OBJ_Heart extends Entity {
         image2 = setup("/objects/heart_half", gp.tileSize, gp.tileSize);
         image3 = setup("/objects/heart_blank", gp.tileSize, gp.tileSize);
     }
-    public void use(Entity entity) {
 
+    @Override
+    public void use(LivingEntity entity) {
         gp.playSE(2);
-        gp.ui.addMessage("Life "+ value);
+        gp.ui.addMessage("Life " + value);
         entity.life += value;
     }
 }

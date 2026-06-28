@@ -1,6 +1,6 @@
 package world;
 
-import entity.Entity;
+import entity.LivingEntity;
 import main.GamePanel;
 import main.GameState;
 
@@ -115,7 +115,7 @@ public class EventHandler {
         }
         gp.keyH.enterPressed = false;
     }
-    public void speak(Entity entity) {
+    public void speak(LivingEntity entity) {
         if(gp.keyH.enterPressed) {
             gp.gameState = GameState.DIALOGUE;
             gp.player.attackCancled = true;

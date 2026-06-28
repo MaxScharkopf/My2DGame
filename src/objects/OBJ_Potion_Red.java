@@ -1,37 +1,35 @@
 package objects;
 
-import entity.Entity;
 import entity.EntityType;
+import entity.ItemEntity;
+import entity.LivingEntity;
 import main.GamePanel;
 import main.GameState;
 
-public class OBJ_Potion_Red extends Entity {
+public class OBJ_Potion_Red extends ItemEntity {
 
     GamePanel gp;
 
-
     public OBJ_Potion_Red(GamePanel gp) {
-
         super(gp);
-
         this.gp = gp;
 
         type = EntityType.CONSUMABLE;
         name = "Red Potion";
         value = 5;
         down1 = setup("/objects/potion_red", gp.tileSize, gp.tileSize);
-        description = "[Red Potion] \n Heals your life by "+value+".";
+        description = "[Red Potion] \n Heals your life by " + value + ".";
         price = 10;
     }
-    public void use(Entity entity) {
+
+    @Override
+    public void use(LivingEntity entity) {
         gp.gameState = GameState.DIALOGUE;
 
-        if(gp.player.life != gp.player.maxLife){
+        if (gp.player.life != gp.player.maxLife) {
             gp.ui.currentDialogue = "You drink the " + name + "!\n" +
-                    " Your life has been recovered by "+ value + ".";
-
+                    " Your life has been recovered by " + value + ".";
             entity.life += value;
-
             gp.player.inventory.remove(gp.ui.getItemIndexOnSlot(gp.ui.playerSlotCol, gp.ui.playerSlotRow));
             gp.playSE(10);
         } else {

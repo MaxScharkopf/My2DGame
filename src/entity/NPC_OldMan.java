@@ -5,7 +5,7 @@ import main.GamePanel;
 import java.awt.*;
 import java.util.Random;
 
-public class NPC_OldMan extends Entity{
+public class NPC_OldMan extends LivingEntity {
 
     public NPC_OldMan(GamePanel gp) {
 

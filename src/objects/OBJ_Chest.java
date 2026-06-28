@@ -1,14 +1,12 @@
 package objects;
 
-import entity.Entity;
+import entity.ItemEntity;
 import main.GamePanel;
 
-public class OBJ_Chest extends Entity {
+public class OBJ_Chest extends ItemEntity {
 
-    GamePanel gp;
-    public OBJ_Chest(GamePanel gp){
+    public OBJ_Chest(GamePanel gp) {
         super(gp);
-        this.gp = gp;
 
         name = "Chest";
         down1 = setup("/objects/chest", gp.tileSize, gp.tileSize);
