@@ -179,5 +179,7 @@ These are the planned features/refactors in priority order. Each one gets its ow
 | 2026-06-28 | Phase 2 complete. 10 classes moved from `main/` and `tile/` into dedicated packages: audio/, config/, input/, physics/, ui/, util/, world/. GamePanel, Entity, Player imports updated. Merged to dev. |
 | 2026-06-28 | Phase 3 complete. Entity split into LivingEntity + ItemEntity. EntityManager/ObjectManager extracted from GamePanel. GamePanel.update() down to 3 lines. Merged to dev. |
 | 2026-06-28 | Phase 4 complete. CombatSystem centralizes all damage logic. Renderer extracted render pipeline from GamePanel. GamePanel down to ~130 lines. Merged to dev. |
+| 2026-06-28 | Fixed map transition freeze bug: UI.counter was shared between drawTransition() (frame timer) and drawInventory() (dead increment). Removed dead counter++ from drawInventory; changed == 50 to >= 50 in drawTransition. Merged to main. |
+| 2026-06-28 | Phase 5 complete. UI split: HUD, TitleScreen, GameOverScreen extracted from UI.java (922 → ~300 lines). Save/load: SaveData in config/ persists map, position, stats, inventory to save.properties; auto-saves on map transition; LOAD GAME on title screen now works. Merged to main. |
 
 > **Update this table at the end of every session.**
