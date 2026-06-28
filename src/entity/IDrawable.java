@@ -7,5 +7,10 @@ import java.awt.Graphics2D;
  * @param g2 the Graphics2D context provided by the game loop for drawing.
  */
 public interface IDrawable {
+
+    /**
+     * Renders this object to the screen.
+     * @param g2 the Graphics2D context for the current frame.
+     */
     void draw(Graphics2D g2);
 }

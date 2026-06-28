@@ -5,5 +5,7 @@ package entity;
  * that needs to advance its state once per game loop tick.
  */
 public interface IUpdatable {
+
+    /** Advances the object's state by one game loop tick. */
     void update();
 }

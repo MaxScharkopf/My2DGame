@@ -5,5 +5,7 @@ package entity;
  * define how they react when struck by overriding damageReaction().
  */
 public interface ICombatant {
+
+    /** Called immediately after this entity takes a hit. Override to add knockback, aggro, etc. */
     void damageReaction();
 }

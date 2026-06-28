@@ -9,6 +9,12 @@ import java.awt.*;
  */
 public interface IEntityEquipment extends IEntity
 {
-    public Color getColor();
-    public void setColor(Color color);
+    /** Returns the color associated with this equipment piece. */
+    Color getColor();
+
+    /**
+     * Sets the color associated with this equipment piece.
+     * @param color the new color to assign.
+     */
+    void setColor(Color color);
 }
