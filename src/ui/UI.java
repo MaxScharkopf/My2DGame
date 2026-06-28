@@ -325,15 +325,22 @@ public class UI {
         }
 
         textY += gp.tileSize;
-        g2.drawString("Quit", textX, textY);
+        g2.drawString("Save", textX, textY);
         if (commandNum == 4) {
+            if (gp.uTool.flickerImage(350)) g2.drawString(">", textX - 25, textY);
+            if (gp.keyH.enterPressed) { gp.saveData.save(); }
+        }
+
+        textY += gp.tileSize;
+        g2.drawString("Quit", textX, textY);
+        if (commandNum == 5) {
             if (gp.uTool.flickerImage(350)) g2.drawString(">", textX - 25, textY);
             if (gp.keyH.enterPressed) { subState = 3; commandNum = 0; }
         }
 
         textY += gp.tileSize * 2;
         g2.drawString("Back", textX, textY);
-        if (commandNum == 5) {
+        if (commandNum == 6) {
             if (gp.uTool.flickerImage(350)) g2.drawString(">", textX - 25, textY);
             if (gp.keyH.enterPressed) { gp.gameState = GameState.PLAY; commandNum = 0; }
         }
@@ -450,7 +457,6 @@ public class UI {
             gp.player.worldY = gp.tileSize * gp.eHandler.tempRow;
             gp.eHandler.previousEventX = gp.player.worldX;
             gp.eHandler.previousEventY = gp.player.worldY;
-            gp.saveData.save();
         }
     }
 
