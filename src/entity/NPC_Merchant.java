@@ -44,6 +44,6 @@ public class NPC_Merchant extends LivingEntity {
 
         super.speak();
         gp.gameState = GameState.TRADE;
-        gp.ui.npc = this;
+        gp.ui.tradeScreen.npc = this;
     }
 }

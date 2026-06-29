@@ -255,7 +255,7 @@ public class Player extends LivingEntity {
             gp.gameState = GameState.GAME_OVER;
             gp.playSE(14);
             gp.stopMusic();
-            gp.ui.commandNum = -1;
+            gp.ui.gameOverScreen.commandNum = -1;
             invincible = false;
         }
     }
@@ -395,13 +395,13 @@ public class Player extends LivingEntity {
 
             gp.gameState = GameState.DIALOGUE;
             gp.playSE(9);
-            gp.ui.currentDialogue= " You are level " + level + " now!\n"
+            gp.ui.dialogueScreen.currentDialogue = " You are level " + level + " now!\n"
                     + "You feel stronger";
         }
     }
-    public void selectItem() {
+    public void selectItem(int slotCol, int slotRow) {
 
-        int itemIndex = gp.ui.getItemIndexOnSlot(gp.ui.playerSlotCol, gp.ui.playerSlotRow); // get index of cursored item
+        int itemIndex = slotCol + slotRow * 5;
 
         if(itemIndex < inventory.size()) { // make sure the cursor is within our index
 

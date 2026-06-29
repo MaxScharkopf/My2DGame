@@ -27,13 +27,13 @@ public class OBJ_Potion_Red extends ItemEntity {
         gp.gameState = GameState.DIALOGUE;
 
         if (gp.player.life != gp.player.maxLife) {
-            gp.ui.currentDialogue = "You drink the " + name + "!\n" +
+            gp.ui.dialogueScreen.currentDialogue = "You drink the " + name + "!\n" +
                     " Your life has been recovered by " + value + ".";
             entity.life += value;
-            gp.player.inventory.remove(gp.ui.getItemIndexOnSlot(gp.ui.playerSlotCol, gp.ui.playerSlotRow));
+            gp.player.inventory.remove(gp.ui.characterScreen.getItemIndex());
             gp.playSE(10);
         } else {
-            gp.ui.currentDialogue = "Your health bar is full. \n This will have no effect";
+            gp.ui.dialogueScreen.currentDialogue = "Your health bar is full. \n This will have no effect";
         }
     }
 }
