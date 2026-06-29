@@ -74,6 +74,18 @@ public class Player extends LivingEntity {
         attack = getAttack(); // determined by strength and weapon attack value
         defense = getDefense(); // determined by dexterity and shield defense value
     }
+    public void applyClassStats(String className) {
+        switch (className) {
+            case "Fighter" -> { maxLife = 8; maxMana = 2; strength = 2; dexterity = 1; }
+            case "Thief"   -> { maxLife = 6; maxMana = 2; strength = 1; dexterity = 2; }
+            case "Sorcerer"-> { maxLife = 4; maxMana = 8; strength = 1; dexterity = 1; }
+        }
+        life = maxLife;
+        mana = maxMana;
+        attack  = getAttack();
+        defense = getDefense();
+    }
+
     public void setDefaultPositions() {
 
         worldX = gp.tileSize * 23; // starting position

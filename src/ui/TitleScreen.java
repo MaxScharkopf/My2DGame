@@ -69,9 +69,9 @@ public class TitleScreen implements Screen {
         if (code == KeyEvent.VK_S) { commandNum++; gp.playSE(11); if (commandNum > 3) commandNum = 0; }
         if (code == KeyEvent.VK_ENTER) {
             gp.playSE(4);
-            if (commandNum == 0) { gp.player.playerClass = "Fighter";  gp.saveData.save(); gp.gameState = GameState.PLAY; gp.playMusic(0); }
-            if (commandNum == 1) { gp.player.playerClass = "Thief";    gp.saveData.save(); gp.gameState = GameState.PLAY; gp.playMusic(0); }
-            if (commandNum == 2) { gp.player.playerClass = "Sorcerer"; gp.saveData.save(); gp.gameState = GameState.PLAY; gp.playMusic(0); }
+            if (commandNum == 0) { gp.player.playerClass = "Fighter";  gp.player.applyClassStats("Fighter");  gp.saveData.save(); gp.gameState = GameState.PLAY; gp.playMusic(0); }
+            if (commandNum == 1) { gp.player.playerClass = "Thief";    gp.player.applyClassStats("Thief");    gp.saveData.save(); gp.gameState = GameState.PLAY; gp.playMusic(0); }
+            if (commandNum == 2) { gp.player.playerClass = "Sorcerer"; gp.player.applyClassStats("Sorcerer"); gp.saveData.save(); gp.gameState = GameState.PLAY; gp.playMusic(0); }
             if (commandNum == 3) { titleScreenState = 1; commandNum = 0; }
         }
     }
@@ -167,21 +167,58 @@ public class TitleScreen implements Screen {
         if (commandNum == 4 && gp.uTool.flickerImage(400)) g2.drawString(">", backX - gp.tileSize, backY);
     }
 
+    private static final String[][] CLASS_ROWS = {
+        // { name, HP, Mana, STR, DEX, description }
+        { "Fighter",  "8",  "2", "2", "1", "High HP and strength — a frontline warrior." },
+        { "Thief",    "6",  "2", "1", "2", "High dexterity — swift and hard to hit."     },
+        { "Sorcerer", "4",  "8", "1", "1", "Low HP but vast mana — powerful spellcaster." },
+    };
+
     private void drawClassSelect(Graphics2D g2) {
         g2.setColor(Color.white);
-        g2.setFont(g2.getFont().deriveFont(42F));
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 42F));
+        String title = "Select your class!";
+        g2.drawString(title, ScreenUtils.centeredX(g2, title, gp.screenWidth), gp.tileSize * 2);
 
-        int y = gp.tileSize * 3;
-        drawClassOption(g2, "Select your class!", y, -1);
-        y += gp.tileSize * 2; drawClassOption(g2, "Fighter",  y, 0);
-        y += gp.tileSize;     drawClassOption(g2, "Theif",    y, 1);
-        y += gp.tileSize;     drawClassOption(g2, "Sorcerer", y, 2);
-        y += gp.tileSize * 2; drawClassOption(g2, "Back",     y, 3);
-    }
+        int cardX = gp.tileSize * 2;
+        int cardW = gp.tileSize * 16;
+        int cardH = (int) (gp.tileSize * 1.8);
+        int startY = (int) (gp.tileSize * 3.2);
+        int gap = 12;
 
-    private void drawClassOption(Graphics2D g2, String label, int y, int cmd) {
-        int x = ScreenUtils.centeredX(g2, label, gp.screenWidth);
-        g2.drawString(label, x, y);
-        if (commandNum == cmd && gp.uTool.flickerImage(400)) g2.drawString(">", x - gp.tileSize, y);
+        for (int i = 0; i < CLASS_ROWS.length; i++) {
+            String[] row = CLASS_ROWS[i];
+            int cardY = startY + i * (cardH + gap);
+            ScreenUtils.drawSubWindow(g2, cardX, cardY, cardW, cardH);
+
+            boolean selected = commandNum == i;
+            g2.setColor(selected ? Color.yellow : Color.white);
+
+            // Class name
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 32F));
+            g2.drawString(row[0], cardX + 24, cardY + 38);
+
+            // Stats
+            g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 24F));
+            String stats = "HP:" + row[1] + "  MP:" + row[2] + "  STR:" + row[3] + "  DEX:" + row[4];
+            g2.drawString(stats, cardX + 24, cardY + 66);
+
+            // Description
+            g2.setColor(selected ? new Color(255, 255, 180) : Color.gray);
+            g2.drawString(row[5], cardX + gp.tileSize * 6, cardY + 52);
+
+            if (selected && gp.uTool.flickerImage(400)) {
+                g2.setColor(Color.yellow);
+                g2.drawString(">", cardX - 28, cardY + 46);
+            }
+        }
+
+        g2.setColor(Color.white);
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 32F));
+        int backY = startY + CLASS_ROWS.length * (cardH + gap) + gp.tileSize;
+        String back = "Back";
+        int backX = ScreenUtils.centeredX(g2, back, gp.screenWidth);
+        g2.drawString(back, backX, backY);
+        if (commandNum == 3 && gp.uTool.flickerImage(400)) g2.drawString(">", backX - gp.tileSize, backY);
     }
 }
