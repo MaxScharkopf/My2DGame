@@ -62,8 +62,8 @@ public class OptionsScreen implements Screen {
             case 1 -> { if (commandNum == 0) subState = 0; }
             case 2 -> { if (commandNum == 0) { subState = 0; commandNum = 3; } }
             case 3 -> {
-                if (commandNum == 0) { gp.saveData.save(); subState = 0; gp.gameState = GameState.TITLE; gp.stopMusic(); }
-                if (commandNum == 1) { subState = 0; gp.gameState = GameState.TITLE; gp.stopMusic(); }
+                if (commandNum == 0) { gp.saveData.save(); subState = 0; gp.ui.titleScreen.resetToMainMenu(); gp.gameState = GameState.TITLE; gp.stopMusic(); }
+                if (commandNum == 1) { subState = 0; gp.ui.titleScreen.resetToMainMenu(); gp.gameState = GameState.TITLE; gp.stopMusic(); }
                 if (commandNum == 2) { subState = 0; commandNum = 5; }
             }
         }

@@ -19,7 +19,7 @@ public class GameOverScreen implements Screen {
         if (code == KeyEvent.VK_S) { commandNum++; if (commandNum > 1) commandNum = 0; gp.playSE(11); }
         if (code == KeyEvent.VK_ENTER) {
             if (commandNum == 0) { gp.gameState = GameState.PLAY;  gp.retry();   }
-            if (commandNum == 1) { gp.gameState = GameState.TITLE; gp.restart(); }
+            if (commandNum == 1) { gp.ui.titleScreen.resetToMainMenu(); gp.gameState = GameState.TITLE; gp.restart(); }
         }
     }
 

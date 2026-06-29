@@ -22,6 +22,11 @@ public class TitleScreen implements Screen {
         for (int i = 0; i < 4; i++) slotSummaries[i] = gp.saveData.getSlotSummary(i);
     }
 
+    public void resetToMainMenu() {
+        titleScreenState = 0;
+        commandNum = 0;
+    }
+
     @Override
     public void onKeyPressed(int code) {
         switch (titleScreenState) {
