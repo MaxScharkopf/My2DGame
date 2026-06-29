@@ -26,7 +26,7 @@ public class Entity implements IEntity, IUsable {
     public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collision = false;
     public boolean collisionOn = false;
-    public boolean immuneCollision = true;
+    public boolean immuneCollision = false;
 
     // POSITION & IDENTITY
     public int worldX, worldY;
