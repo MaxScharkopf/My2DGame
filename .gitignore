@@ -1,3 +1,6 @@
 .idea/
 out/
 *.class
+*.iml
+config.txt
+save*.properties
