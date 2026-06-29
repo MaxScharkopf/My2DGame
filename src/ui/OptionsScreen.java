@@ -31,7 +31,7 @@ public class OptionsScreen implements Screen {
 
         int maxCmd = switch (subState) {
             case 0  -> 6;
-            case 3  -> 1;
+            case 3  -> 2;
             default -> 0;
         };
 
@@ -54,7 +54,7 @@ public class OptionsScreen implements Screen {
                 switch (commandNum) {
                     case 0 -> { gp.fullScreenOn = !gp.fullScreenOn; subState = 1; commandNum = 0; }
                     case 3 -> { subState = 2; commandNum = 0; }
-                    case 4 -> gp.saveData.save();
+                    case 4 -> { gp.saveData.save(); gp.ui.addMessage("Game Saved!"); }
                     case 5 -> { subState = 3; commandNum = 0; }
                     case 6 -> { gp.gameState = GameState.PLAY; commandNum = 0; subState = 0; }
                 }
@@ -62,8 +62,9 @@ public class OptionsScreen implements Screen {
             case 1 -> { if (commandNum == 0) subState = 0; }
             case 2 -> { if (commandNum == 0) { subState = 0; commandNum = 3; } }
             case 3 -> {
-                if (commandNum == 0) { subState = 0; gp.gameState = GameState.TITLE; gp.stopMusic(); }
-                if (commandNum == 1) { subState = 0; commandNum = 5; }
+                if (commandNum == 0) { gp.saveData.save(); subState = 0; gp.gameState = GameState.TITLE; gp.stopMusic(); }
+                if (commandNum == 1) { subState = 0; gp.gameState = GameState.TITLE; gp.stopMusic(); }
+                if (commandNum == 2) { subState = 0; commandNum = 5; }
             }
         }
     }
@@ -99,7 +100,7 @@ public class OptionsScreen implements Screen {
         draw_row(g2, "Sound Effects",  tx, ty, 2); ty += gp.tileSize;
         draw_row(g2, "Control",        tx, ty, 3); ty += gp.tileSize;
         draw_row(g2, "Save",           tx, ty, 4); ty += gp.tileSize;
-        draw_row(g2, "Quit",           tx, ty, 5); ty += gp.tileSize * 2;
+        draw_row(g2, "Quit",           tx, ty, 5); ty += gp.tileSize;
         draw_row(g2, "Back",           tx, ty, 6);
 
         // Widgets on the right side
@@ -137,6 +138,11 @@ public class OptionsScreen implements Screen {
     }
 
     private void drawControls(Graphics2D g2, int fx, int fy) {
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 32F));
+        String ctrlTitle = "Controls";
+        g2.drawString(ctrlTitle, ScreenUtils.centeredX(g2, ctrlTitle, gp.screenWidth), fy + gp.tileSize);
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 32F));
+
         int tx = fx + gp.tileSize;
         int ty = fy + gp.tileSize * 2;
         g2.drawString("Move",             tx, ty); ty += gp.tileSize;
@@ -163,20 +169,18 @@ public class OptionsScreen implements Screen {
     private void drawQuitConfirm(Graphics2D g2, int fx, int fy) {
         int tx = fx + gp.tileSize;
         int ty = fy + gp.tileSize * 3;
-        for (String line : "Quit the game and \n return to the title screen?".split("\n")) {
+        for (String line : "Return to the title screen?".split("\n")) {
             g2.drawString(line, tx, ty);
             ty += 40;
         }
-        ty += gp.tileSize * 3;
-        String yes = "Yes";
-        int yx = ScreenUtils.centeredX(g2, yes, gp.screenWidth);
-        g2.drawString(yes, yx, ty);
-        if (commandNum == 0 && gp.uTool.flickerImage(350)) g2.drawString(">", yx - 25, ty);
+        ty += gp.tileSize * 2;
 
-        ty += gp.tileSize;
-        String no = "No";
-        int nx = ScreenUtils.centeredX(g2, no, gp.screenWidth);
-        g2.drawString(no, nx, ty);
-        if (commandNum == 1 && gp.uTool.flickerImage(350)) g2.drawString(">", nx - 25, ty);
+        String[] opts = {"Save and Quit", "Quit without Saving", "Cancel"};
+        for (int i = 0; i < opts.length; i++) {
+            int ox = ScreenUtils.centeredX(g2, opts[i], gp.screenWidth);
+            g2.drawString(opts[i], ox, ty);
+            if (commandNum == i && gp.uTool.flickerImage(350)) g2.drawString(">", ox - 25, ty);
+            ty += gp.tileSize;
+        }
     }
 }
