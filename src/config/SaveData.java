@@ -60,6 +60,7 @@ public class SaveData {
             var p = gp.player;
             String mapName = gp.currentMap == 0 ? "Overworld" : "Interior";
 
+            bw.write("player.class=" + p.playerClass);                         bw.newLine();
             bw.write("mapName=" + mapName);                                    bw.newLine();
             bw.write("currentMap=" + gp.currentMap);                           bw.newLine();
             bw.write("player.worldX=" + p.worldX);                            bw.newLine();
@@ -100,6 +101,7 @@ public class SaveData {
         }
 
         var p = gp.player;
+        p.playerClass  = props.getProperty("player.class", "Fighter");
         gp.currentMap  = Integer.parseInt(props.getProperty("currentMap",  "0"));
         p.worldX       = Integer.parseInt(props.getProperty("player.worldX"));
         p.worldY       = Integer.parseInt(props.getProperty("player.worldY"));

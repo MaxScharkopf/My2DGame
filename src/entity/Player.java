@@ -18,6 +18,7 @@ public class Player extends LivingEntity {
     public final int screenX;
     public final int screenY;
     public boolean attackCancled = false;
+    public String playerClass = "Fighter";
 
 
     public Player(GamePanel gp, KeyHandler keyH) {
@@ -49,6 +50,8 @@ public class Player extends LivingEntity {
         worldY = gp.tileSize * 21;
         speed = 4;
         direction = "down";
+
+        playerClass = "Fighter";
 
         // PLAYER STATUS
         level = 1;

@@ -69,9 +69,9 @@ public class TitleScreen implements Screen {
         if (code == KeyEvent.VK_S) { commandNum++; gp.playSE(11); if (commandNum > 3) commandNum = 0; }
         if (code == KeyEvent.VK_ENTER) {
             gp.playSE(4);
-            if (commandNum == 0) { System.out.println("Fighter");  gp.gameState = GameState.PLAY; gp.playMusic(0); }
-            if (commandNum == 1) { System.out.println("Thief");    gp.gameState = GameState.PLAY; gp.playMusic(0); }
-            if (commandNum == 2) { System.out.println("Sorcerer"); gp.gameState = GameState.PLAY; gp.playMusic(0); }
+            if (commandNum == 0) { gp.player.playerClass = "Fighter";  gp.saveData.save(); gp.gameState = GameState.PLAY; gp.playMusic(0); }
+            if (commandNum == 1) { gp.player.playerClass = "Thief";    gp.saveData.save(); gp.gameState = GameState.PLAY; gp.playMusic(0); }
+            if (commandNum == 2) { gp.player.playerClass = "Sorcerer"; gp.saveData.save(); gp.gameState = GameState.PLAY; gp.playMusic(0); }
             if (commandNum == 3) { titleScreenState = 1; commandNum = 0; }
         }
     }
