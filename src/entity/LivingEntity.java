@@ -231,7 +231,7 @@ public abstract class LivingEntity extends Entity implements ILiving, ICombatant
         if (dialogues[dialogueIndex] == null) {
             dialogueIndex = 0;
         }
-        gp.ui.currentDialogue = dialogues[dialogueIndex];
+        gp.ui.dialogueScreen.currentDialogue = dialogues[dialogueIndex];
         dialogueIndex++;
 
         switch (gp.player.direction) {
