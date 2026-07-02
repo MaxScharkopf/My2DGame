@@ -72,23 +72,6 @@ public class AssetSetter {
         int mapNum = 0;
     }
     public void setInteractiveTile() {
-
-        int mapNum = 0;
-        int i = 0;
-
-        gp.em.iTile[mapNum][i] = new IT_DryTree(gp, 27, 12); i++;
-        gp.em.iTile[mapNum][i] = new IT_DryTree(gp, 28, 12); i++;
-        gp.em.iTile[mapNum][i] = new IT_DryTree(gp, 29, 12); i++;
-        gp.em.iTile[mapNum][i] = new IT_DryTree(gp, 30, 12); i++;
-        gp.em.iTile[mapNum][i] = new IT_DryTree(gp, 31, 12); i++;
-        gp.em.iTile[mapNum][i] = new IT_DryTree(gp, 32, 12); i++;
-        gp.em.iTile[mapNum][i] = new IT_DryTree(gp, 33, 12); i++;
-        gp.em.iTile[mapNum][i] = new IT_DryTree(gp, 31, 21); i++;
-        gp.em.iTile[mapNum][i] = new IT_DryTree(gp, 18, 40); i++;
-        gp.em.iTile[mapNum][i] = new IT_DryTree(gp, 17, 40); i++;
-        gp.em.iTile[mapNum][i] = new IT_DryTree(gp, 16, 40); i++;
-        gp.em.iTile[mapNum][i] = new IT_DryTree(gp, 15, 40); i++;
-        gp.em.iTile[mapNum][i] = new IT_DryTree(gp, 14, 40); i++;
-        gp.em.iTile[mapNum][i] = new IT_DryTree(gp, 13, 40);
+        // Interactive tiles for map 0 are now placed via LDtk entity layer
     }
 }

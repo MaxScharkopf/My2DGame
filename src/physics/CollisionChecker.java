@@ -3,6 +3,7 @@ package physics;
 import entity.Entity;
 import entity.LivingEntity;
 import main.GamePanel;
+import tile.TiledMap;
 
 public class CollisionChecker {
 
@@ -25,43 +26,74 @@ public class CollisionChecker {
             int entityTopRow = entityTopWorldY / gp.tileSize;
             int entityBottomRow = entityBottomWorldY / gp.tileSize;
 
-            int tileNum1, tileNum2;
+            TiledMap tm = gp.tileM.tiledMaps[gp.currentMap];
 
-            switch (entity.direction) {
-                case "up" -> {
-                    entityTopRow = ((entityTopWorldY - entity.speed) / gp.tileSize);
-                    tileNum1 = gp.tileM.mapTileNum[gp.currentMap][entityLeftCol][entityTopRow];
-                    tileNum2 = gp.tileM.mapTileNum[gp.currentMap][entityRightCol][entityTopRow];
-                    if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
-                        entity.collisionOn = true;
+            if (tm != null && tm.intGrid != null) {
+                switch (entity.direction) {
+                    case "up" -> {
+                        entityTopRow = (entityTopWorldY - entity.speed) / gp.tileSize;
+                        if (isTiledSolid(tm, entityLeftCol, entityTopRow) || isTiledSolid(tm, entityRightCol, entityTopRow))
+                            entity.collisionOn = true;
+                    }
+                    case "down" -> {
+                        entityBottomRow = (entityBottomWorldY + entity.speed) / gp.tileSize;
+                        if (isTiledSolid(tm, entityLeftCol, entityBottomRow) || isTiledSolid(tm, entityRightCol, entityBottomRow))
+                            entity.collisionOn = true;
+                    }
+                    case "left" -> {
+                        entityLeftCol = (entityLeftWorldX - entity.speed) / gp.tileSize;
+                        if (isTiledSolid(tm, entityLeftCol, entityTopRow) || isTiledSolid(tm, entityLeftCol, entityBottomRow))
+                            entity.collisionOn = true;
+                    }
+                    case "right" -> {
+                        entityRightCol = (entityRightWorldX + entity.speed) / gp.tileSize;
+                        if (isTiledSolid(tm, entityRightCol, entityTopRow) || isTiledSolid(tm, entityRightCol, entityBottomRow))
+                            entity.collisionOn = true;
                     }
                 }
-                case "down" -> {
-                    entityBottomRow = ((entityBottomWorldY + entity.speed) / gp.tileSize);
-                    tileNum1 = gp.tileM.mapTileNum[gp.currentMap][entityLeftCol][entityBottomRow];
-                    tileNum2 = gp.tileM.mapTileNum[gp.currentMap][entityRightCol][entityBottomRow];
-                    if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
-                        entity.collisionOn = true;
+            } else {
+                int tileNum1, tileNum2;
+                switch (entity.direction) {
+                    case "up" -> {
+                        entityTopRow = ((entityTopWorldY - entity.speed) / gp.tileSize);
+                        tileNum1 = gp.tileM.mapTileNum[gp.currentMap][entityLeftCol][entityTopRow];
+                        tileNum2 = gp.tileM.mapTileNum[gp.currentMap][entityRightCol][entityTopRow];
+                        if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
+                            entity.collisionOn = true;
+                        }
                     }
-                }
-                case "left" -> {
-                    entityLeftCol = ((entityLeftWorldX - entity.speed) / gp.tileSize);
-                    tileNum1 = gp.tileM.mapTileNum[gp.currentMap][entityLeftCol][entityTopRow];
-                    tileNum2 = gp.tileM.mapTileNum[gp.currentMap][entityLeftCol][entityBottomRow];
-                    if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
-                        entity.collisionOn = true;
+                    case "down" -> {
+                        entityBottomRow = ((entityBottomWorldY + entity.speed) / gp.tileSize);
+                        tileNum1 = gp.tileM.mapTileNum[gp.currentMap][entityLeftCol][entityBottomRow];
+                        tileNum2 = gp.tileM.mapTileNum[gp.currentMap][entityRightCol][entityBottomRow];
+                        if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
+                            entity.collisionOn = true;
+                        }
                     }
-                }
-                case "right" -> {
-                    entityRightCol = ((entityRightWorldX + entity.speed) / gp.tileSize);
-                    tileNum1 = gp.tileM.mapTileNum[gp.currentMap][entityRightCol][entityTopRow];
-                    tileNum2 = gp.tileM.mapTileNum[gp.currentMap][entityRightCol][entityBottomRow];
-                    if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
-                        entity.collisionOn = true;
+                    case "left" -> {
+                        entityLeftCol = ((entityLeftWorldX - entity.speed) / gp.tileSize);
+                        tileNum1 = gp.tileM.mapTileNum[gp.currentMap][entityLeftCol][entityTopRow];
+                        tileNum2 = gp.tileM.mapTileNum[gp.currentMap][entityLeftCol][entityBottomRow];
+                        if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
+                            entity.collisionOn = true;
+                        }
+                    }
+                    case "right" -> {
+                        entityRightCol = ((entityRightWorldX + entity.speed) / gp.tileSize);
+                        tileNum1 = gp.tileM.mapTileNum[gp.currentMap][entityRightCol][entityTopRow];
+                        tileNum2 = gp.tileM.mapTileNum[gp.currentMap][entityRightCol][entityBottomRow];
+                        if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
+                            entity.collisionOn = true;
+                        }
                     }
                 }
             }
         }
+    }
+
+    private boolean isTiledSolid(TiledMap tm, int col, int row) {
+        if (col < 0 || col >= tm.intGridWidth || row < 0 || row >= tm.intGridHeight) return true;
+        return tm.intGrid[col][row] == 1;
     }
 
     public int checkObject(LivingEntity entity, boolean player) {
